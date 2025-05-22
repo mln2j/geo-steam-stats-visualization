@@ -1,7 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
-import csv
 import time
+import json
+import os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -117,51 +118,79 @@ def isGameAvailableForSale(appId):
     except Exception:
         return False
 
-def saveToCsv(data, filename, priceRegions):
-    fieldnames = [
-        "rank", "appId", "name", "currentPlayers", "peakPlayers", "hoursPlayed"
-    ] + priceRegions
-    with open(filename, "w", encoding="utf-8", newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        for game in data:
-            row = {key: game.get(key) for key in fieldnames}
-            if "regionalPrices" in game:
-                for region in priceRegions:
-                    row[region] = game["regionalPrices"].get(region)
-            writer.writerow(row)
+def getMonthlyPeakPlayers(appId):
+    url = f'https://steamcharts.com/app/{appId}'
+    response = requests.get(url)
+    if response.status_code != 200:
+        return []
+    soup = BeautifulSoup(response.text, 'html.parser')
+    table = soup.find('table', class_='common-table')
+    if not table:
+        return []
+    rows = table.find_all('tr')[1:]
+    monthlyData = []
+    for row in rows:
+        cols = row.find_all('td')
+        if len(cols) >= 5:
+            month = cols[0].text.strip()
+            peakPlayers = cols[4].text.strip().replace(',', '')
+            try:
+                peakPlayersInt = int(peakPlayers)
+            except ValueError:
+                peakPlayersInt = None
+            monthlyData.append({
+                'month': month,
+                'peakPlayers': peakPlayersInt
+            })
+    return monthlyData
+
+def saveGameToJson(game, filename):
+    # Ako file ne postoji, kreiraj prazan listu
+    if not os.path.exists(filename):
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump([], f)
+    # Učitaj postojeće podatke
+    with open(filename, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    # Dodaj novu igru
+    data.append(game)
+    # Spremi natrag
+    with open(filename, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
 
 def main():
+    jsonFile = "data.json"
+    # Kreiraj prazan JSON na početku
+    with open(jsonFile, "w", encoding="utf-8") as f:
+        json.dump([], f)
     topGames = getSteamchartsTopGames(pages=4)
-    allRegions = set()
     for i, game in enumerate(topGames):
         appId = game["appId"]
         if not appId:
             continue
-        print(f"[{i+1}/{len(topGames)}] {game['name']} (appId: {appId}) - provjera free2play i dostupnosti...")
+        print(f"[{i + 1}/{len(topGames)}] {game['name']} (appId: {appId}) - provjera free2play i dostupnosti...")
         if isFreeToPlay(appId):
             print("Igra je free-to-play, preskačem dohvat cijena.")
             game["regionalPrices"] = {}
+            game["monthlyPeakPlayers"] = getMonthlyPeakPlayers(appId)
+            saveGameToJson(game, jsonFile)
             continue
         if not isGameAvailableForSale(appId):
             print("Igra nije na prodaju, preskačem dohvat cijena.")
             game["regionalPrices"] = {}
+            game["monthlyPeakPlayers"] = getMonthlyPeakPlayers(appId)
+            saveGameToJson(game, jsonFile)
             continue
         print("Dohvaćam cijene...")
         prices = getSteamdbPrices(appId)
         regionalPrices = {}
         for entry in prices:
             regionalPrices[entry["region"]] = entry["convertedPrice"]
-            allRegions.add(entry["region"])
         game["regionalPrices"] = regionalPrices
+        game["monthlyPeakPlayers"] = getMonthlyPeakPlayers(appId)
+        saveGameToJson(game, jsonFile)
         time.sleep(15)
-        # if (i + 1) % 5 == 0:
-        #     priceRegions = sorted(list(allRegions))
-        #     saveToCsv(topGames, f"data_partial_{i+1}.csv", priceRegions)
-        #     print(f"Spremljeno {i+1} igara u data_partial_{i+1}.csv")
-    priceRegions = sorted(list(allRegions))
-    saveToCsv(topGames, "data.csv", priceRegions)
-    print(f"Dohvaćeno i spremljeno {len(topGames)} igara s cijenama po regijama.")
+    print(f"Svi podaci spremljeni u {jsonFile}")
 
 if __name__ == "__main__":
     main()
