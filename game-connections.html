@@ -42,25 +42,13 @@
             </p>
         </div>
 
-        <div class="card">
-            <div class="card-header connections-header">
-                <h2 class="card-title"></h2>
-                <div class="search-container">
-                    <input type="text" id="game-search" class="search-input" placeholder="Search games...">
-                </div>
+        <div class="data-chart">
+            <div class="search-container">
+                <input type="text" id="game-search" class="search-input" placeholder="Search games...">
+                <div id="game-list" class="game-list"></div>
             </div>
-            <div class="card-content">
-                <div id="connections-viz" class="connections-container"></div>
-            </div>
-        </div>
-
-        <div id="distribution-card" class="card" style="display: none;">
-            <div class="card-header">
-                <h2 class="card-title" id="distribution-title">Game - Country Distribution</h2>
-            </div>
-            <div class="card-content">
-                <div id="distribution-chart" class="chart-container"></div>
-            </div>
+            <div id="playtime-chart" class="chart-container"></div>
+            <div id="legend" class="legend-container"></div>
         </div>
     </main>
 
@@ -73,10 +61,176 @@
     </footer>
 </div>
 
-<script src="scripts/mock-data.js"></script>
-<script src="scripts/game-connections.js"></script>
 <script>
     document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
+
+<script>
+    d3.json("data/data.json", function(error, games) {
+        if (error) throw error;
+
+        var selectedIds = [];
+        var color = d3.scale.category10();
+
+        // Prikaz svih igara
+        function renderGameList(filteredGames) {
+            var list = d3.select("#game-list").selectAll(".game-list-item")
+                .data(filteredGames, function(d) { return d.appId; });
+
+            var enter = list.enter()
+                .append("div")
+                .attr("class", "game-list-item")
+                .style("display", "flex")
+                .style("align-items", "center");
+
+            enter.append("input")
+                .attr("type", "checkbox")
+                .attr("class", "game-checkbox")
+                .attr("id", function(d) { return "cb-" + d.appId; })
+                .property("checked", function(d) { return selectedIds.indexOf(d.appId) !== -1; })
+                .on("change", function(d) {
+                    if (this.checked) {
+                        if (selectedIds.indexOf(d.appId) === -1) selectedIds.push(d.appId);
+                    } else {
+                        var idx = selectedIds.indexOf(d.appId);
+                        if (idx !== -1) selectedIds.splice(idx, 1);
+                    }
+                    updateChart();
+                });
+
+            enter.append("label")
+                .attr("for", function(d) { return "cb-" + d.appId; })
+                .text(function(d) { return d.name; })
+                .style("margin-left", "8px");
+
+            list.exit().remove();
+
+            // Osvježi stanje checkboxa na filter promjeni
+            list.select("input.game-checkbox")
+                .property("checked", function(d) { return selectedIds.indexOf(d.appId) !== -1; });
+        }
+
+        // Search funkcionalnost
+        d3.select("#game-search").on("input", function() {
+            var searchTerm = this.value.toLowerCase();
+            var filtered = games.filter(function(g) {
+                return g.name.toLowerCase().indexOf(searchTerm) !== -1;
+            });
+            renderGameList(filtered);
+        });
+
+        // Inicijalni prikaz svih igara
+        renderGameList(games);
+
+        // Inicijalni prikaz grafa
+        updateChart();
+
+        function updateChart() {
+            d3.select("#playtime-chart").selectAll("*").remove();
+            var margin = {top: 30, right: 80, bottom: 40, left: 60},
+                width = 800 - margin.left - margin.right,
+                height = 400 - margin.top - margin.bottom;
+
+            var svg = d3.select("#playtime-chart")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            var selectedGames = games.filter(function(g) { return selectedIds.indexOf(g.appId) !== -1; });
+
+            if (selectedGames.length === 0) {
+                svg.append("text")
+                    .attr("x", width/2)
+                    .attr("y", height/2)
+                    .attr("text-anchor", "middle")
+                    .text("Select one or more games to view playtime history.");
+                return;
+            }
+
+            // Prikupi sve mjesece
+            var allMonths = d3.set();
+            selectedGames.forEach(function(game) {
+                game.monthlyPeakPlayers.forEach(function(mp) {
+                    allMonths.add(mp.month);
+                });
+            });
+            var months = allMonths.values().sort(function(a,b){
+                var parse = d3.time.format("%B %Y");
+                try {
+                    return parse(a) - parse(b);
+                } catch(e) { return 0; }
+            });
+
+            var parseTime = d3.time.format("%B %Y");
+            var x = d3.time.scale()
+                .domain(d3.extent(months, function(m) {
+                    try { return parseTime.parse(m); } catch(e) { return null; }
+                }))
+                .range([0, width]);
+
+            var y = d3.scale.linear()
+                .domain([0, d3.max(selectedGames, function(game) {
+                    return d3.max(game.monthlyPeakPlayers, function(mp) { return mp.peakPlayers; });
+                })])
+                .range([height, 0]);
+
+            var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(10);
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
+
+            var yAxis = d3.svg.axis().scale(y).orient("left");
+            svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis);
+
+            var line = d3.svg.line()
+                .x(function(d) { return x(parseTime.parse(d.month)); })
+                .y(function(d) { return y(d.peakPlayers); });
+
+            selectedGames.forEach(function(game, i) {
+                svg.append("path")
+                    .datum(game.monthlyPeakPlayers.filter(function(mp){ return mp.month !== "Last 30 Days"; }))
+                    .attr("class", "line")
+                    .attr("d", line)
+                    .style("stroke", color(game.name))
+                    .style("stroke-width", 2)
+                    .style("fill", "none");
+
+            });
+
+            // svg.append("text")
+            //     .attr("transform", "rotate(-90)")
+            //     .attr("y", -50)
+            //     .attr("x", -height/2)
+            //     .attr("dy", "1em")
+            //     .style("text-anchor", "middle")
+            //     .text("Monthly Peak Players");
+            //
+            // svg.append("text")
+            //     .attr("x", width / 2)
+            //     .attr("y", height + 35)
+            //     .attr("text-anchor", "middle")
+            //     .text("Month");
+
+            var legendDiv = d3.select("#legend");
+            legendDiv.selectAll("*").remove();
+
+            selectedGames.forEach(function(game, i) {
+                var item = legendDiv.append("div")
+                    .attr("class", "legend-item");
+                item.append("span")
+                    .attr("class", "legend-color")
+                    .style("background", color(game.name));
+                item.append("span")
+                    .text(game.name);
+            });
+        }
+    });
+
 </script>
 </body>
 </html>
