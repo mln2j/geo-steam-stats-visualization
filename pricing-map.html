@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Map - Steam Data Visualization</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <header class="navbar">
+        <div class="navbar-container">
+            <h1 class="navbar-title">SteamGlobe</h1>
+            <nav class="navbar-nav">
+                <a href="pricing-map.html" class="navbar-link active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        <path d="M2 12h20"></path>
+                    </svg>
+                    Pricing Map
+                </a>
+                <a href="game-connections.html" class="navbar-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                    Playtime stats
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="page-header">
+            <h1 class="page-title">World Map Steam Pricing</h1>
+            <p class="page-description">
+                Click on countries to view detailed Steam prices of the top 100 titles for that country. Click on a second country to compare prices
+                between them.
+            </p>
+        </div>
+
+        <div class="visualization-grid">
+
+            <div>
+                <h2 class="card-title">World Map</h2>
+                <div class="card map-card">
+                    <div class="card-header">
+
+                    </div>
+                    <div class="card-content">
+                        <div id="world-map" class="world-map-container"></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div>
+                <h2 class="card-title">Statistics</h2>
+                <div class="card stats-card">
+                    <div class="card-header">
+
+                    </div>
+                    <div class="card-content">
+                        <div id="country-stats" class="country-stats-container">
+                            <div id="no-selection-message" class="no-selection-message">
+                                Click on a country to view statistics
+                            </div>
+                            <div id="stats-tabs" class="tabs" style="display: none;">
+                                <div class="tabs-list">
+                                    <button class="tab-button active" data-tab="players">Player Count</button>
+                                    <button class="tab-button" data-tab="playtime">Avg. Play Time</button>
+                                    <button class="tab-button" data-tab="inventory">Avg. Inventory Value</button>
+                                </div>
+                                <div class="tab-content active" id="players-tab">
+                                    <div id="player-chart" class="chart-container"></div>
+                                </div>
+                                <div class="tab-content" id="playtime-tab">
+                                    <div id="playtime-chart" class="chart-container"></div>
+                                </div>
+                                <div class="tab-content" id="inventory-tab">
+                                    <div id="inventory-chart" class="chart-container"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <p class="footer-text">
+                &copy; <span id="current-year"></span> Steam Data Visualization. All rights reserved.
+            </p>
+        </div>
+    </footer>
+</div>
+
+<script src="scripts/mock-data.js"></script>
+<script src="scripts/world-map.js"></script>
+<script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

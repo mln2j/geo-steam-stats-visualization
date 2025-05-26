@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Connections - Steam Data Visualization</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <header class="navbar">
+        <div class="navbar-container">
+            <h1 class="navbar-title">SteamGlobe</h1>
+            <nav class="navbar-nav">
+                <a href="pricing-map.html" class="navbar-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        <path d="M2 12h20"></path>
+                    </svg>
+                    Pricing Map
+                </a>
+                <a href="game-connections.html" class="navbar-link active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                    Playtime stats
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="page-header">
+            <h1 class="page-title">Steam Playtime History</h1>
+            <p class="page-description">
+                Explore which game titles have been played how much and when. Click on a game title to see its previous playtime.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-header connections-header">
+                <h2 class="card-title"></h2>
+                <div class="search-container">
+                    <input type="text" id="game-search" class="search-input" placeholder="Search games...">
+                </div>
+            </div>
+            <div class="card-content">
+                <div id="connections-viz" class="connections-container"></div>
+            </div>
+        </div>
+
+        <div id="distribution-card" class="card" style="display: none;">
+            <div class="card-header">
+                <h2 class="card-title" id="distribution-title">Game - Country Distribution</h2>
+            </div>
+            <div class="card-content">
+                <div id="distribution-chart" class="chart-container"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <p class="footer-text">
+                &copy; <span id="current-year"></span> Steam Data Visualization. All rights reserved.
+            </p>
+        </div>
+    </footer>
+</div>
+
+<script src="scripts/mock-data.js"></script>
+<script src="scripts/game-connections.js"></script>
+<script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
