@@ -49,9 +49,6 @@
             <div>
                 <h2 class="card-title">World Map</h2>
                 <div class="card map-card">
-                    <div class="card-header">
-
-                    </div>
                     <div class="card-content">
                         <div id="world-map" class="world-map-container"></div>
                     </div>
@@ -103,10 +100,55 @@
     </footer>
 </div>
 
-<script src="scripts/mock-data.js"></script>
-<script src="scripts/world-map.js"></script>
 <script>
     document.getElementById('current-year').textContent = new Date().getFullYear();
+
+
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var width = 900, height = 500;
+
+        var projection = d3.geo.mercator()
+            .scale(140)
+            .translate([width / 2, height / 1.5]);
+
+        var path = d3.geo.path().projection(projection);
+
+        var zoom = d3.behavior.zoom()
+            .scaleExtent([1, 8])
+            .on("zoom", zoomed);
+
+        var svg = d3.select("#world-map").append("svg")
+            .call(zoom)
+            .append("g");
+
+        function zoomed() {
+            var t = d3.event.translate,
+                s = d3.event.scale;
+            // Bez ograničenja pomicanja
+            zoom.translate(t);
+            svg.attr("transform", "translate(" + t + ")scale(" + s + ")");
+        }
+
+
+        d3.json("https://unpkg.com/world-atlas@1/world/110m.json", function(error, world) {
+            if (error) throw error;
+            var countries = topojson.feature(world, world.objects.countries).features;
+
+            svg.selectAll("path")
+                .data(countries)
+                .enter().append("path")
+                .attr("d", path)
+                .attr("fill", "#cce5ff")
+                .attr("stroke", "#333")
+                .attr("stroke-width", 0.5)
+                .on("mouseover", function() { d3.select(this).attr("fill", "#3399ff"); })
+                .on("mouseout", function() { d3.select(this).attr("fill", "#cce5ff"); });
+        });
+    });
+</script>
+
+
 </body>
 </html>
