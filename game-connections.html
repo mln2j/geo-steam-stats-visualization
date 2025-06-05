@@ -223,6 +223,35 @@
                 return;
             }
 
+            svg.selectAll(".hover-line").remove();
+            svg.selectAll(".overlay-rect").remove();
+
+            var hoverLine = svg.append("line")
+                .attr("class", "hover-line")
+                .attr("y1", 0)
+                .attr("y2", height)
+                .attr("stroke", "#999")
+                .attr("stroke-width", 1)
+                .attr("stroke-dasharray", "4 4")
+                .style("opacity", 0);
+
+            var overlay = svg.append("rect")
+                .attr("class", "overlay-rect")
+                .attr("width", width)
+                .attr("height", height)
+                .style("fill", "none")
+                .style("pointer-events", "all")
+                .on("mousemove", function () {
+                    var mouse = d3.mouse(this);
+                    var mouseX = mouse[0];
+                    hoverLine
+                        .attr("x1", mouseX)
+                        .attr("x2", mouseX)
+                        .style("opacity", 1);
+                })
+                .on("mouseout", function () {
+                    hoverLine.style("opacity", 0);
+                });
 
             var parseTime = d3.time.format("%B %Y");
             var allMonths = d3.set();
@@ -366,7 +395,7 @@
                         d3.select(this)
                             .transition().duration(100)
                             .attr("r", 2);
-                        tooltip.style("opacity", 0);
+                        tooltip.transition().duration(350).style("opacity", 0);
                     });
 
                 dots.transition()
