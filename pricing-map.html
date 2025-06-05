@@ -105,6 +105,8 @@
 
 
 </script>
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var width = 900, height = 500;
@@ -120,34 +122,188 @@
             .on("zoom", zoomed);
 
         var svg = d3.select("#world-map").append("svg")
+            .attr("width", width)
+            .attr("height", height)
             .call(zoom)
             .append("g");
 
         function zoomed() {
             var t = d3.event.translate,
                 s = d3.event.scale;
-            // Bez ograničenja pomicanja
             zoom.translate(t);
             svg.attr("transform", "translate(" + t + ")scale(" + s + ")");
         }
 
+        // 1. Mapiranje država na regije/valute
+        // Ovo je primjer, proširi ga prema potrebama i podacima
+        var countryToRegion = {
+            // Eurozone
+            "Austria": "Euro",
+            "Belgium": "Euro",
+            "Croatia": "Euro",
+            "Cyprus": "Euro",
+            "Estonia": "Euro",
+            "Finland": "Euro",
+            "France": "Euro",
+            "Germany": "Euro",
+            "Greece": "Euro",
+            "Ireland": "Euro",
+            "Italy": "Euro",
+            "Latvia": "Euro",
+            "Lithuania": "Euro",
+            "Luxembourg": "Euro",
+            "Malta": "Euro",
+            "Netherlands": "Euro",
+            "Portugal": "Euro",
+            "Slovakia": "Euro",
+            "Slovenia": "Euro",
+            "Spain": "Euro",
 
-        d3.json("https://unpkg.com/world-atlas@1/world/110m.json", function(error, world) {
+            // USD
+            "United States of America": "U.S. Dollar",
+            "Puerto Rico": "U.S. Dollar",
+            "Guam": "U.S. Dollar",
+
+            // Pound
+            "United Kingdom": "British Pound",
+
+            // Swiss Franc
+            "Switzerland": "Swiss Franc",
+
+            // Norwegian Krone
+            "Norway": "Norwegian Krone",
+
+            // Polish Zloty
+            "Poland": "Polish Zloty",
+
+            // Russian Ruble
+            "Russia": "Russian Ruble",
+
+            // Brazilian Real
+            "Brazil": "Brazilian Real",
+
+            // Canadian Dollar
+            "Canada": "Canadian Dollar",
+
+            // Australian Dollar
+            "Australia": "Australian Dollar",
+            "New Zealand": "New Zealand Dollar",
+
+            // Turkish Lira
+            "Turkey": "MENA - U.S. Dollar",
+
+            // Japanese Yen
+            "Japan": "Japanese Yen",
+
+            // South Korean Won
+            "South Korea": "South Korean Won",
+
+            // Chinese Yuan
+            "China": "Chinese Yuan",
+
+            // Indian Rupee
+            "India": "Indian Rupee",
+
+            // Mexican Peso
+            "Mexico": "Mexican Peso",
+
+            // South African Rand
+            "South Africa": "South African Rand",
+
+            // Add more mappings as needed...
+
+            // Special SteamDB regions (grouped pricing)
+            "Ukraine": "Ukrainian Hryvnia",
+            "Kazakhstan": "Kazakhstani Tenge",
+            "Vietnam": "Vietnamese Dong",
+            "Colombia": "Colombian Peso",
+            "Chile": "Chilean Peso",
+            "Peru": "Peruvian Sol",
+            "Malaysia": "Malaysian Ringgit",
+            "Singapore": "Singapore Dollar",
+            "Hong Kong": "Hong Kong Dollar",
+            "Philippines": "Philippine Peso",
+            "Thailand": "Thai Baht",
+            "Indonesia": "Indonesian Rupiah",
+            "Israel": "Israeli New Shekel",
+            "Saudi Arabia": "Saudi Riyal",
+            "United Arab Emirates": "U.A.E. Dirham",
+            "Qatar": "Qatari Riyal",
+            "Kuwait": "Kuwaiti Dinar",
+            "Uruguay": "Uruguayan Peso",
+            "Costa Rica": "Costa Rican Colon",
+            "Argentina": "LATAM - U.S. Dollar",
+        };
+
+
+        // 2. Tooltip helper
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "d3-tooltip")
+            .style("opacity", 0);
+
+        // 3. Učitaj podatke o igrama i karti
+        d3.json("data/data.json", function(error, gameData) {
             if (error) throw error;
-            var countries = topojson.feature(world, world.objects.countries).features;
 
-            svg.selectAll("path")
-                .data(countries)
-                .enter().append("path")
-                .attr("d", path)
-                .attr("fill", "#cce5ff")
-                .attr("stroke", "#333")
-                .attr("stroke-width", 0.5)
-                .on("mouseover", function() { d3.select(this).attr("fill", "#3399ff"); })
-                .on("mouseout", function() { d3.select(this).attr("fill", "#cce5ff"); });
+            // Učitaj ispravan TopoJSON s imenima država
+            d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json", function(error, world) {
+                if (error) throw error;
+                var countries = topojson.feature(world, world.objects.countries).features;
+
+                // 4. Izračunaj prosječnu cijenu po regiji
+                var avgPriceByRegion = {};
+                Object.keys(countryToRegion).forEach(function(country) {
+                    var region = countryToRegion[country];
+                    var prices = gameData.map(function(game) {
+                        var priceStr = game.regionalPrices[region];
+                        if (!priceStr) return null;
+                        var num = parseFloat(priceStr.replace(/[^\d,\.]/g, '').replace(',', '.'));
+                        return isNaN(num) ? null : num;
+                    }).filter(p => p !== null);
+                    if (prices.length > 0) {
+                        avgPriceByRegion[region] = d3.mean(prices);
+                    }
+                });
+
+                // 5. Skala boja
+                var color = d3.scale.linear()
+                    .domain(d3.extent(Object.values(avgPriceByRegion)))
+                    .range(["#cce5ff", "#003366"]);
+
+                // 6. Iscrtaj države
+                svg.selectAll("path")
+                    .data(countries)
+                    .enter().append("path")
+                    .attr("d", path)
+                    .attr("fill", d => {
+                        const region = countryToRegion[d.properties.name];
+                        return region ? color(avgPriceByRegion[region] || 0) : "#eee";
+                    })
+                    .attr("stroke", "#333")
+                    .attr("stroke-width", 0.5)
+                    .on("mouseover", function(d) {
+                        const region = countryToRegion[d.properties.name];
+                        d3.select(this).attr("fill", "#3399ff");
+                        tooltip.transition().duration(100).style("opacity", 0.95);
+                        tooltip.html(`
+                        <strong>${d.properties.name}</strong><br>
+                        ${region ? `Avg. price: ${avgPriceByRegion[region]?.toFixed(2) || 'N/A'}` : 'No data'}
+                    `);
+                    })
+                    .on("mousemove", () => {
+                        tooltip.style("left", (d3.event.pageX + 15) + "px")
+                            .style("top", (d3.event.pageY - 28) + "px");
+                    })
+                    .on("mouseout", function(d) {
+                        const region = countryToRegion[d.properties.name];
+                        d3.select(this).attr("fill", region ? color(avgPriceByRegion[region] || 0) : "#eee");
+                        tooltip.transition().duration(200).style("opacity", 0);
+                    });
+            });
         });
     });
 </script>
+
 
 
 </body>
