@@ -72,30 +72,7 @@
         var selectedIds = [];
         var color = d3.scale.category10();
 
-        function animateLine(path) {
-            var totalLength = path.node().getTotalLength();
-            path
-                .attr("stroke-dasharray", totalLength + " " + totalLength)
-                .attr("stroke-dashoffset", totalLength)
-                .transition()
-                .duration(800)
-                .attr("stroke-dashoffset", 0);
-        }
-
-        function animateLineOut(path, callback) {
-            var totalLength = path.node().getTotalLength();
-            path
-                .transition()
-                .duration(600)
-                .attr("stroke-dashoffset", totalLength)
-                .each("end", function() {
-                    path.remove();
-                    if (callback) callback();
-                });
-        }
-
-
-        // Prikaz svih igara
+        // Render game list with checkboxes and search
         function renderGameList(filteredGames) {
             var list = d3.select("#game-list").selectAll(".game-list-item")
                 .data(filteredGames, function(d) { return d.appId; });
@@ -147,6 +124,26 @@
 
         // Inicijalni prikaz grafa
         updateChart();
+
+        function animateLine(path) {
+            var totalLength = path.node().getTotalLength();
+            path
+                .attr("stroke-dasharray", totalLength + " " + totalLength)
+                .attr("stroke-dashoffset", totalLength)
+                .transition()
+                .duration(800)
+                .attr("stroke-dashoffset", 0);
+        }
+
+        function animateLineOut(path, callback) {
+            var totalLength = path.node().getTotalLength();
+            path
+                .transition()
+                .duration(600)
+                .attr("stroke-dashoffset", totalLength)
+                .remove();
+            if (callback) callback();
+        }
 
         function updateChart() {
             d3.select("#playtime-chart").selectAll("*").remove();
@@ -212,10 +209,12 @@
                 .attr("transform", "translate(0," + height + ")")
                 .call(xAxis);
 
-            var yAxis = d3.svg.axis().scale(y).orient("left");
+            var yFormat = d3.format(".2s");
+            var yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(yFormat);
             svg.append("g")
                 .attr("class", "y axis")
                 .call(yAxis);
+
 
             var line = d3.svg.line()
                 .x(function(d) { return x(parseTime.parse(d.month)); })
@@ -227,35 +226,66 @@
                 .append("div")
                 .attr("class", "d3-tooltip")
                 .style("opacity", 0)
-                .merge ? tooltip : tooltip; // ovo radi samo u v4+, ali u v3 je dovoljno gore
+                .merge ? tooltip : tooltip;
 
+            // Makni stare linije kojih više nema
+            svg.selectAll(".line")
+                .filter(function() {
+                    var id = d3.select(this).attr("data-id");
+                    return selectedGames.map(function(g) { return g.appId+""; }).indexOf(id) === -1;
+                })
+                .each(function() { animateLineOut(d3.select(this)); });
+
+            // Makni stare točke kojih više nema
+            svg.selectAll(".dot")
+                .filter(function() {
+                    var id = d3.select(this).attr("data-gameid");
+                    return selectedGames.map(function(g) { return g.appId+""; }).indexOf(id) === -1;
+                })
+                .transition()
+                .duration(400)
+                .attr("r", 0)
+                .style("opacity", 0)
+                .remove();
+
+            // Dodaj i animiraj linije i točke za odabrane igre
             selectedGames.forEach(function(game, i) {
                 var filteredData = game.monthlyPeakPlayers.filter(function(mp){
                     return mp.month !== "Last 30 Days" && parseTime.parse(mp.month);
                 });
 
-                svg.append("path")
+                // Ako već postoji, ne crtaj ponovno
+                var lineId = "line-" + game.appId;
+                if (!svg.select("#" + lineId).empty()) return;
+
+                var path = svg.append("path")
                     .datum(filteredData)
                     .attr("class", "line")
+                    .attr("id", lineId)
+                    .attr("data-id", game.appId)
                     .attr("d", line)
                     .style("stroke", color(game.name))
                     .style("stroke-width", 2)
                     .style("fill", "none");
 
-                // Dodaj točke na liniju
-                svg.selectAll(".dot-" + i)
+                animateLine(path);
+
+                // Dodaj točke, ali sakrij ih na početku
+                var dots = svg.selectAll(".dot-" + game.appId)
                     .data(filteredData)
                     .enter()
                     .append("circle")
-                    .attr("class", "dot dot-" + i)
+                    .attr("class", "dot dot-" + game.appId)
+                    .attr("data-gameid", game.appId)
                     .attr("cx", function(d) { return x(parseTime.parse(d.month)); })
                     .attr("cy", function(d) { return y(d.peakPlayers); })
-                    .attr("r", 3) // početni radijus
+                    .attr("r", 0)
                     .style("fill", color(game.name))
+                    .style("opacity", 0)
                     .on("mouseover", function(d) {
                         d3.select(this)
                             .transition().duration(100)
-                            .attr("r", 5); // povećaj na hover
+                            .attr("r", 5);
                         tooltip.style("opacity", 0.95)
                             .html(
                                 "<strong>" + game.name + "</strong><br>" +
@@ -272,17 +302,26 @@
                     .on("mouseout", function() {
                         d3.select(this)
                             .transition().duration(100)
-                            .attr("r", 3); // vrati na početni radijus
+                            .attr("r", 3);
                         tooltip.style("opacity", 0);
                     });
+
+                // Animiraj pojavljivanje točaka nakon linije
+                dots.transition()
+                    .delay(800) // nakon što je linija iscrtan (isti kao trajanje animateLine)
+                    .duration(400)
+                    .attr("r", 3)
+                    .style("opacity", 1);
             });
 
             svg.append("text")
                 .attr("transform", "rotate(-90)")
-                .attr("y", -50)
+                .attr("y", -55) // više lijevo od y-osi, iznad tickova
                 .attr("x", -height/2)
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
+                .style("font-size", "15px")
+                .style("font-weight", "bold")
                 .text("Monthly Peak Players");
 
             svg.append("text")
@@ -305,8 +344,8 @@
                     .text(game.name);
             });
         }
-    });
 
+    });
 </script>
 </body>
 </html>
