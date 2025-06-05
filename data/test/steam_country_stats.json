@@ -1,0 +1,1340 @@
+[
+    {
+        "country": "AFGHANISTAN",
+        "total_bytes": "6.3 TB",
+        "avg_download_rate": "5.1 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "ANGOLA",
+        "total_bytes": "35.4 TB",
+        "avg_download_rate": "12.3 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "ALBANIA",
+        "total_bytes": "410.5 TB",
+        "avg_download_rate": "107.6 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "ALBANIA",
+        "total_bytes": "410.5 TB",
+        "avg_download_rate": "107.6 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "ARGENTINA",
+        "total_bytes": "17.2 PB",
+        "avg_download_rate": "72.9 Mbps",
+        "percent_traffic": "1.0%"
+    },
+    {
+        "country": "ARMENIA",
+        "total_bytes": "468.4 TB",
+        "avg_download_rate": "80.3 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "ANTARCTICA",
+        "total_bytes": "106.5 GB",
+        "avg_download_rate": "44.9 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "AUSTRALIA",
+        "total_bytes": "28.6 PB",
+        "avg_download_rate": "65.5 Mbps",
+        "percent_traffic": "1.6%"
+    },
+    {
+        "country": "AUSTRIA",
+        "total_bytes": "7.1 PB",
+        "avg_download_rate": "78.2 Mbps",
+        "percent_traffic": "0.4%"
+    },
+    {
+        "country": "AZERBAIJAN",
+        "total_bytes": "680.7 TB",
+        "avg_download_rate": "55.9 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "BURUNDI",
+        "total_bytes": "1.5 TB",
+        "avg_download_rate": "20.1 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "BELGIUM",
+        "total_bytes": "7.9 PB",
+        "avg_download_rate": "102 Mbps",
+        "percent_traffic": "0.4%"
+    },
+    {
+        "country": "BENIN",
+        "total_bytes": "9.2 TB",
+        "avg_download_rate": "11.2 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "BURKINA FASO",
+        "total_bytes": "12.2 TB",
+        "avg_download_rate": "31.7 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "BANGLADESH",
+        "total_bytes": "1.2 PB",
+        "avg_download_rate": "32.4 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "BULGARIA",
+        "total_bytes": "2.3 PB",
+        "avg_download_rate": "84 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "BULGARIA",
+        "total_bytes": "2.3 PB",
+        "avg_download_rate": "84 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "BOSNIA AND HERZEGOVINA",
+        "total_bytes": "507.5 TB",
+        "avg_download_rate": "34.5 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "BELARUS",
+        "total_bytes": "5.3 PB",
+        "avg_download_rate": "47 Mbps",
+        "percent_traffic": "0.3%"
+    },
+    {
+        "country": "BELIZE",
+        "total_bytes": "37.6 TB",
+        "avg_download_rate": "41.1 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "BOLIVIA",
+        "total_bytes": "857.9 TB",
+        "avg_download_rate": "37.9 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "BRAZIL",
+        "total_bytes": "75 PB",
+        "avg_download_rate": "130.5 Mbps",
+        "percent_traffic": "4.2%"
+    },
+    {
+        "country": "BRAZIL",
+        "total_bytes": "75 PB",
+        "avg_download_rate": "130.5 Mbps",
+        "percent_traffic": "4.2%"
+    },
+    {
+        "country": "BHUTAN",
+        "total_bytes": "8.4 TB",
+        "avg_download_rate": "15.4 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "BOTSWANA",
+        "total_bytes": "24 TB",
+        "avg_download_rate": "10.1 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "CENTRAL AFRICAN REPUBLIC",
+        "total_bytes": "29.5 GB",
+        "avg_download_rate": "13.6 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "CANADA",
+        "total_bytes": "43.5 PB",
+        "avg_download_rate": "136.2 Mbps",
+        "percent_traffic": "2.4%"
+    },
+    {
+        "country": "SWITZERLAND",
+        "total_bytes": "6.3 PB",
+        "avg_download_rate": "140.2 Mbps",
+        "percent_traffic": "0.4%"
+    },
+    {
+        "country": "CHILE",
+        "total_bytes": "10.5 PB",
+        "avg_download_rate": "156.2 Mbps",
+        "percent_traffic": "0.6%"
+    },
+    {
+        "country": "CHINA",
+        "total_bytes": "402.6 PB",
+        "avg_download_rate": "115.6 Mbps",
+        "percent_traffic": "22.3%"
+    },
+    {
+        "country": "COTE D'IVOIRE",
+        "total_bytes": "74.8 TB",
+        "avg_download_rate": "39 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "NIGERIA",
+        "total_bytes": "122.9 TB",
+        "avg_download_rate": "20.3 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "CONGO, THE DEMOCRATIC REPUBLIC OF THE",
+        "total_bytes": "20.3 TB",
+        "avg_download_rate": "16.8 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "CONGO",
+        "total_bytes": "10.1 TB",
+        "avg_download_rate": "16.7 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "COLOMBIA",
+        "total_bytes": "6.7 PB",
+        "avg_download_rate": "92.9 Mbps",
+        "percent_traffic": "0.4%"
+    },
+    {
+        "country": "COSTA RICA",
+        "total_bytes": "1.4 PB",
+        "avg_download_rate": "98.1 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "COSTA RICA",
+        "total_bytes": "1.4 PB",
+        "avg_download_rate": "98.1 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "COSTA RICA",
+        "total_bytes": "1.4 PB",
+        "avg_download_rate": "98.1 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "CYPRUS",
+        "total_bytes": "586 TB",
+        "avg_download_rate": "49.9 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "CZECH REPUBLIC",
+        "total_bytes": "9.3 PB",
+        "avg_download_rate": "66 Mbps",
+        "percent_traffic": "0.5%"
+    },
+    {
+        "country": "GERMANY",
+        "total_bytes": "75.4 PB",
+        "avg_download_rate": "82.4 Mbps",
+        "percent_traffic": "4.2%"
+    },
+    {
+        "country": "DJIBOUTI",
+        "total_bytes": "11.4 TB",
+        "avg_download_rate": "13.2 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "DENMARK",
+        "total_bytes": "8 PB",
+        "avg_download_rate": "158.9 Mbps",
+        "percent_traffic": "0.4%"
+    },
+    {
+        "country": "DOMINICAN REPUBLIC",
+        "total_bytes": "999.9 TB",
+        "avg_download_rate": "39.6 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "ALGERIA",
+        "total_bytes": "1.3 PB",
+        "avg_download_rate": "21.1 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "ECUADOR",
+        "total_bytes": "1.8 PB",
+        "avg_download_rate": "83.4 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "EGYPT",
+        "total_bytes": "1.1 PB",
+        "avg_download_rate": "18.6 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "ERITREA",
+        "total_bytes": "62.7 GB",
+        "avg_download_rate": "5.7 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "SPAIN",
+        "total_bytes": "23.7 PB",
+        "avg_download_rate": "159.9 Mbps",
+        "percent_traffic": "1.3%"
+    },
+    {
+        "country": "ESTONIA",
+        "total_bytes": "1.6 PB",
+        "avg_download_rate": "69 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "ETHIOPIA",
+        "total_bytes": "31.3 TB",
+        "avg_download_rate": "9.4 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "FINLAND",
+        "total_bytes": "6.8 PB",
+        "avg_download_rate": "97.8 Mbps",
+        "percent_traffic": "0.4%"
+    },
+    {
+        "country": "FINLAND",
+        "total_bytes": "6.8 PB",
+        "avg_download_rate": "97.8 Mbps",
+        "percent_traffic": "0.4%"
+    },
+    {
+        "country": "FALKLAND ISLANDS (MALVINAS)",
+        "total_bytes": "250.6 GB",
+        "avg_download_rate": "5.6 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "FAROE ISLANDS",
+        "total_bytes": "49.3 TB",
+        "avg_download_rate": "50.4 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "FRANCE",
+        "total_bytes": "45.5 PB",
+        "avg_download_rate": "150.6 Mbps",
+        "percent_traffic": "2.5%"
+    },
+    {
+        "country": "FRENCH GUIANA",
+        "total_bytes": "52.9 TB",
+        "avg_download_rate": "62.7 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "GABON",
+        "total_bytes": "16.3 TB",
+        "avg_download_rate": "29.8 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "UNITED KINGDOM",
+        "total_bytes": "56.1 PB",
+        "avg_download_rate": "94.6 Mbps",
+        "percent_traffic": "3.1%"
+    },
+    {
+        "country": "GEORGIA",
+        "total_bytes": "1.1 PB",
+        "avg_download_rate": "37.8 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "GHANA",
+        "total_bytes": "63.1 TB",
+        "avg_download_rate": "23.4 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "SIERRA LEONE",
+        "total_bytes": "3.4 TB",
+        "avg_download_rate": "11.5 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "SENEGAL",
+        "total_bytes": "49.1 TB",
+        "avg_download_rate": "16.6 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "GUINEA-BISSAU",
+        "total_bytes": "710.3 GB",
+        "avg_download_rate": "6.3 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "EQUATORIAL GUINEA",
+        "total_bytes": "1.5 TB",
+        "avg_download_rate": "6.8 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "GREECE",
+        "total_bytes": "3.2 PB",
+        "avg_download_rate": "50.7 Mbps",
+        "percent_traffic": "0.2%"
+    },
+    {
+        "country": "GREENLAND",
+        "total_bytes": "38.1 TB",
+        "avg_download_rate": "22.7 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "GUATEMALA",
+        "total_bytes": "632.9 TB",
+        "avg_download_rate": "49.8 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "GUYANA",
+        "total_bytes": "59.9 TB",
+        "avg_download_rate": "55.4 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "HONDURAS",
+        "total_bytes": "369.8 TB",
+        "avg_download_rate": "54.2 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "BOSNIA AND HERZEGOVINA",
+        "total_bytes": "507.5 TB",
+        "avg_download_rate": "34.5 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "BOSNIA AND HERZEGOVINA",
+        "total_bytes": "507.5 TB",
+        "avg_download_rate": "34.5 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "HUNGARY",
+        "total_bytes": "5.7 PB",
+        "avg_download_rate": "123.1 Mbps",
+        "percent_traffic": "0.3%"
+    },
+    {
+        "country": "HUNGARY",
+        "total_bytes": "5.7 PB",
+        "avg_download_rate": "123.1 Mbps",
+        "percent_traffic": "0.3%"
+    },
+    {
+        "country": "INDIA",
+        "total_bytes": "13.3 PB",
+        "avg_download_rate": "50.4 Mbps",
+        "percent_traffic": "0.7%"
+    },
+    {
+        "country": "IRELAND",
+        "total_bytes": "3.4 PB",
+        "avg_download_rate": "92.2 Mbps",
+        "percent_traffic": "0.2%"
+    },
+    {
+        "country": "IRAQ",
+        "total_bytes": "2.3 PB",
+        "avg_download_rate": "26.9 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "ICELAND",
+        "total_bytes": "626 TB",
+        "avg_download_rate": "148.7 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "PALESTINIAN TERRITORY, OCCUPIED",
+        "total_bytes": "398.9 TB",
+        "avg_download_rate": "62.9 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "ITALY",
+        "total_bytes": "12.7 PB",
+        "avg_download_rate": "72.7 Mbps",
+        "percent_traffic": "0.7%"
+    },
+    {
+        "country": "JAMAICA",
+        "total_bytes": "198.8 TB",
+        "avg_download_rate": "51.1 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "JORDAN",
+        "total_bytes": "1.2 PB",
+        "avg_download_rate": "82.9 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "JORDAN",
+        "total_bytes": "1.2 PB",
+        "avg_download_rate": "82.9 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "KAZAKHSTAN",
+        "total_bytes": "6.4 PB",
+        "avg_download_rate": "52.7 Mbps",
+        "percent_traffic": "0.4%"
+    },
+    {
+        "country": "KENYA",
+        "total_bytes": "159.7 TB",
+        "avg_download_rate": "16.1 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "KYRGYZSTAN",
+        "total_bytes": "617.8 TB",
+        "avg_download_rate": "46.4 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "CAMBODIA",
+        "total_bytes": "594.6 TB",
+        "avg_download_rate": "29.5 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "KOREA, REPUBLIC OF",
+        "total_bytes": "33.6 PB",
+        "avg_download_rate": "165.2 Mbps",
+        "percent_traffic": "1.9%"
+    },
+    {
+        "country": "KUWAIT",
+        "total_bytes": "2.6 PB",
+        "avg_download_rate": "91.4 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "LAO PEOPLE'S DEMOCRATIC REPUBLIC",
+        "total_bytes": "142.2 TB",
+        "avg_download_rate": "28.3 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "LEBANON",
+        "total_bytes": "397.4 TB",
+        "avg_download_rate": "19 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "LIBERIA",
+        "total_bytes": "2 TB",
+        "avg_download_rate": "20 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "LIBYA",
+        "total_bytes": "159.6 TB",
+        "avg_download_rate": "11.1 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "SRI LANKA",
+        "total_bytes": "344 TB",
+        "avg_download_rate": "25.9 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "LESOTHO",
+        "total_bytes": "3 TB",
+        "avg_download_rate": "20.5 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "LITHUANIA",
+        "total_bytes": "2.7 PB",
+        "avg_download_rate": "83.3 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "LUXEMBOURG",
+        "total_bytes": "461.4 TB",
+        "avg_download_rate": "109.1 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "LATVIA",
+        "total_bytes": "1.8 PB",
+        "avg_download_rate": "95.1 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "MOROCCO",
+        "total_bytes": "1.4 PB",
+        "avg_download_rate": "29.3 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "MOLDOVA, REPUBLIC OF",
+        "total_bytes": "1.1 PB",
+        "avg_download_rate": "102.6 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "MADAGASCAR",
+        "total_bytes": "46.6 TB",
+        "avg_download_rate": "31 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "MEXICO",
+        "total_bytes": "17.3 PB",
+        "avg_download_rate": "72.5 Mbps",
+        "percent_traffic": "1.0%"
+    },
+    {
+        "country": "MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF",
+        "total_bytes": "325.3 TB",
+        "avg_download_rate": "54.2 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "MALI",
+        "total_bytes": "6.2 TB",
+        "avg_download_rate": "14 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "MONTENEGRO",
+        "total_bytes": "200.9 TB",
+        "avg_download_rate": "73.8 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "MONGOLIA",
+        "total_bytes": "704.9 TB",
+        "avg_download_rate": "47.3 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "MOZAMBIQUE",
+        "total_bytes": "35.2 TB",
+        "avg_download_rate": "16.1 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "MAURITANIA",
+        "total_bytes": "6.4 TB",
+        "avg_download_rate": "19.7 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "MALAWI",
+        "total_bytes": "9 TB",
+        "avg_download_rate": "20.4 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "MALAWI",
+        "total_bytes": "9 TB",
+        "avg_download_rate": "20.4 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "MALAYSIA",
+        "total_bytes": "9.4 PB",
+        "avg_download_rate": "90.6 Mbps",
+        "percent_traffic": "0.5%"
+    },
+    {
+        "country": "CHINA",
+        "total_bytes": "402.6 PB",
+        "avg_download_rate": "115.6 Mbps",
+        "percent_traffic": "22.3%"
+    },
+    {
+        "country": "NAMIBIA",
+        "total_bytes": "63.1 TB",
+        "avg_download_rate": "13.1 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "NEW CALEDONIA",
+        "total_bytes": "60.8 TB",
+        "avg_download_rate": "46 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "NIGER",
+        "total_bytes": "3 TB",
+        "avg_download_rate": "25.1 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "NIGERIA",
+        "total_bytes": "122.9 TB",
+        "avg_download_rate": "20.3 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "NICARAGUA",
+        "total_bytes": "177.3 TB",
+        "avg_download_rate": "53.7 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "NETHERLANDS",
+        "total_bytes": "14.8 PB",
+        "avg_download_rate": "129.3 Mbps",
+        "percent_traffic": "0.8%"
+    },
+    {
+        "country": "NETHERLANDS",
+        "total_bytes": "14.8 PB",
+        "avg_download_rate": "129.3 Mbps",
+        "percent_traffic": "0.8%"
+    },
+    {
+        "country": "NEPAL",
+        "total_bytes": "385.9 TB",
+        "avg_download_rate": "63.3 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "NEPAL",
+        "total_bytes": "385.9 TB",
+        "avg_download_rate": "63.3 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "OMAN",
+        "total_bytes": "584.3 TB",
+        "avg_download_rate": "77.1 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "PAKISTAN",
+        "total_bytes": "1.2 PB",
+        "avg_download_rate": "17.5 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "PANAMA",
+        "total_bytes": "562 TB",
+        "avg_download_rate": "106.1 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "PERU",
+        "total_bytes": "6.5 PB",
+        "avg_download_rate": "98.8 Mbps",
+        "percent_traffic": "0.4%"
+    },
+    {
+        "country": "PERU",
+        "total_bytes": "6.5 PB",
+        "avg_download_rate": "98.8 Mbps",
+        "percent_traffic": "0.4%"
+    },
+    {
+        "country": "PERU",
+        "total_bytes": "6.5 PB",
+        "avg_download_rate": "98.8 Mbps",
+        "percent_traffic": "0.4%"
+    },
+    {
+        "country": "POLAND",
+        "total_bytes": "32.4 PB",
+        "avg_download_rate": "91.3 Mbps",
+        "percent_traffic": "1.8%"
+    },
+    {
+        "country": "PUERTO RICO",
+        "total_bytes": "1.4 PB",
+        "avg_download_rate": "83.9 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "PORTUGAL",
+        "total_bytes": "6.7 PB",
+        "avg_download_rate": "132.2 Mbps",
+        "percent_traffic": "0.4%"
+    },
+    {
+        "country": "PARAGUAY",
+        "total_bytes": "587.4 TB",
+        "avg_download_rate": "82.5 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "QATAR",
+        "total_bytes": "972.3 TB",
+        "avg_download_rate": "143.1 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "ROMANIA",
+        "total_bytes": "7.3 PB",
+        "avg_download_rate": "124.5 Mbps",
+        "percent_traffic": "0.4%"
+    },
+    {
+        "country": "ROMANIA",
+        "total_bytes": "7.3 PB",
+        "avg_download_rate": "124.5 Mbps",
+        "percent_traffic": "0.4%"
+    },
+    {
+        "country": "RWANDA",
+        "total_bytes": "13 TB",
+        "avg_download_rate": "20.9 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "MOROCCO",
+        "total_bytes": "1.4 PB",
+        "avg_download_rate": "29.3 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "SAUDI ARABIA",
+        "total_bytes": "10.5 PB",
+        "avg_download_rate": "84.1 Mbps",
+        "percent_traffic": "0.6%"
+    },
+    {
+        "country": "SS",
+        "total_bytes": "3.8 TB",
+        "avg_download_rate": "18.9 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "SENEGAL",
+        "total_bytes": "49.1 TB",
+        "avg_download_rate": "16.6 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "SENEGAL",
+        "total_bytes": "49.1 TB",
+        "avg_download_rate": "16.6 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "SIERRA LEONE",
+        "total_bytes": "3.4 TB",
+        "avg_download_rate": "11.5 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "EL SALVADOR",
+        "total_bytes": "429.3 TB",
+        "avg_download_rate": "60.3 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "SOMALIA",
+        "total_bytes": "9.5 TB",
+        "avg_download_rate": "18.4 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "SERBIA",
+        "total_bytes": "2.3 PB",
+        "avg_download_rate": "68.4 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "SURINAME",
+        "total_bytes": "22.5 TB",
+        "avg_download_rate": "14.5 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "SLOVAKIA",
+        "total_bytes": "3.1 PB",
+        "avg_download_rate": "86.4 Mbps",
+        "percent_traffic": "0.2%"
+    },
+    {
+        "country": "SLOVENIA",
+        "total_bytes": "1 PB",
+        "avg_download_rate": "102 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "SWEDEN",
+        "total_bytes": "12.7 PB",
+        "avg_download_rate": "129.5 Mbps",
+        "percent_traffic": "0.7%"
+    },
+    {
+        "country": "ESWATINI",
+        "total_bytes": "5.7 TB",
+        "avg_download_rate": "17.3 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "CHAD",
+        "total_bytes": "512.7 GB",
+        "avg_download_rate": "10.9 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "TOGO",
+        "total_bytes": "14.4 TB",
+        "avg_download_rate": "23.8 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "THAILAND",
+        "total_bytes": "21.2 PB",
+        "avg_download_rate": "132.9 Mbps",
+        "percent_traffic": "1.2%"
+    },
+    {
+        "country": "TAJIKISTAN",
+        "total_bytes": "96.7 TB",
+        "avg_download_rate": "14.3 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "TURKMENISTAN",
+        "total_bytes": "26.1 TB",
+        "avg_download_rate": "4.3 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "TUNISIA",
+        "total_bytes": "654.8 TB",
+        "avg_download_rate": "12.8 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "TURKEY",
+        "total_bytes": "26.3 PB",
+        "avg_download_rate": "45.6 Mbps",
+        "percent_traffic": "1.5%"
+    },
+    {
+        "country": "TAIWAN",
+        "total_bytes": "17 PB",
+        "avg_download_rate": "74.6 Mbps",
+        "percent_traffic": "0.9%"
+    },
+    {
+        "country": "TANZANIA, UNITED REPUBLIC OF",
+        "total_bytes": "29.8 TB",
+        "avg_download_rate": "15.5 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "UGANDA",
+        "total_bytes": "25.2 TB",
+        "avg_download_rate": "20.8 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "UKRAINE",
+        "total_bytes": "24.1 PB",
+        "avg_download_rate": "73.1 Mbps",
+        "percent_traffic": "1.3%"
+    },
+    {
+        "country": "URUGUAY",
+        "total_bytes": "1.7 PB",
+        "avg_download_rate": "111.5 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UZBEKISTAN",
+        "total_bytes": "1.7 PB",
+        "avg_download_rate": "44.5 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "VENEZUELA",
+        "total_bytes": "1.6 PB",
+        "avg_download_rate": "51.6 Mbps",
+        "percent_traffic": "0.1%"
+    },
+    {
+        "country": "LAO PEOPLE'S DEMOCRATIC REPUBLIC",
+        "total_bytes": "142.2 TB",
+        "avg_download_rate": "28.3 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "VANUATU",
+        "total_bytes": "2.3 TB",
+        "avg_download_rate": "25.5 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "ISRAEL",
+        "total_bytes": "4.3 PB",
+        "avg_download_rate": "110.9 Mbps",
+        "percent_traffic": "0.2%"
+    },
+    {
+        "country": "YEMEN",
+        "total_bytes": "14.8 TB",
+        "avg_download_rate": "15.6 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "SOUTH AFRICA",
+        "total_bytes": "4.3 PB",
+        "avg_download_rate": "44.5 Mbps",
+        "percent_traffic": "0.2%"
+    },
+    {
+        "country": "ZAMBIA",
+        "total_bytes": "32.3 TB",
+        "avg_download_rate": "22 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "ZIMBABWE",
+        "total_bytes": "37.6 TB",
+        "avg_download_rate": "22.8 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "ZIMBABWE",
+        "total_bytes": "37.6 TB",
+        "avg_download_rate": "22.8 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "ZIMBABWE",
+        "total_bytes": "37.6 TB",
+        "avg_download_rate": "22.8 Mbps",
+        "percent_traffic": "0.0%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    },
+    {
+        "country": "UNITED STATES",
+        "total_bytes": "387.7 PB",
+        "avg_download_rate": "141.8 Mbps",
+        "percent_traffic": "21.5%"
+    }
+]
