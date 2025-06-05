@@ -290,6 +290,8 @@ body {
 }
 
 .tabs-list {
+    margin-left: 2rem;
+    margin-right: 2rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;

@@ -8,15 +8,20 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
 </head>
 <body>
+
+
 <div class="container">
     <header class="navbar">
         <div class="navbar-container">
             <h1 class="navbar-title">SteamGlobe</h1>
             <nav class="navbar-nav">
                 <a href="pricing-map.html" class="navbar-link active">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="icon">
                         <circle cx="12" cy="12" r="10"></circle>
                         <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                         <path d="M2 12h20"></path>
@@ -24,7 +29,9 @@
                     Pricing Map
                 </a>
                 <a href="playtime-stats.html" class="navbar-link">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="icon">
                         <line x1="18" y1="20" x2="18" y2="10"></line>
                         <line x1="12" y1="20" x2="12" y2="4"></line>
                         <line x1="6" y1="20" x2="6" y2="14"></line>
@@ -39,8 +46,7 @@
         <div class="page-header">
             <h1 class="page-title">World Map Steam Pricing</h1>
             <p class="page-description">
-                Click on countries to view detailed Steam prices of the top 100 titles for that country. Click on a second country to compare prices
-                between them.
+                Click on countries to view detailed Steam prices and download statistics for that country.
             </p>
         </div>
 
@@ -55,13 +61,10 @@
                 </div>
             </div>
 
-
             <div>
                 <h2 class="card-title">Statistics</h2>
                 <div class="card stats-card">
-                    <div class="card-header">
-
-                    </div>
+                    <div class="card-header"></div>
                     <div class="card-content">
                         <div id="country-stats" class="country-stats-container">
                             <div id="no-selection-message" class="no-selection-message">
@@ -69,20 +72,13 @@
                             </div>
                             <div id="stats-tabs" class="tabs" style="display: none;">
                                 <div class="tabs-list">
-                                    <button class="tab-button active" data-tab="players">Player Count</button>
-                                    <button class="tab-button" data-tab="playtime">Avg. Play Time</button>
-                                    <button class="tab-button" data-tab="inventory">Avg. Inventory Value</button>
+                                    <button class="tab-button active" data-tab="downloadRate">Download Rate</button>
+                                    <button class="tab-button" data-tab="avgPrice">Avg. Price</button>
+                                    <button class="tab-button" data-tab="totalData">Total Data</button>
                                 </div>
-                                <div class="tab-content active" id="players-tab">
-                                    <div id="player-chart" class="chart-container"></div>
-                                </div>
-                                <div class="tab-content" id="playtime-tab">
-                                    <div id="playtime-chart" class="chart-container"></div>
-                                </div>
-                                <div class="tab-content" id="inventory-tab">
-                                    <div id="inventory-chart" class="chart-container"></div>
-                                </div>
+                                <div id="combined-chart" class="chart-container"></div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -102,296 +98,368 @@
 
 <script>
     document.getElementById('current-year').textContent = new Date().getFullYear();
-
-
 </script>
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var width = 900, height = 500;
+            var width = 900, height = 500;
 
-        var projection = d3.geo.mercator()
-            .scale(140)
-            .translate([width / 2, height / 1.5]);
+            var projection = d3.geo.mercator()
+                .scale(140)
+                .translate([width / 2, height / 1.5]);
 
-        var path = d3.geo.path().projection(projection);
+            var path = d3.geo.path().projection(projection);
 
-        var zoom = d3.behavior.zoom()
-            .scaleExtent([1, 8])
-            .on("zoom", zoomed);
+            var zoom = d3.behavior.zoom()
+                .scaleExtent([1, 8])
+                .on("zoom", zoomed);
 
-        var svg = d3.select("#world-map").append("svg")
-            .attr("width", width)
-            .attr("height", height)
-            .call(zoom)
-            .append("g");
+            var svg = d3.select("#world-map").append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .call(zoom)
+                .append("g");
 
-        function zoomed() {
-            var t = d3.event.translate,
-                s = d3.event.scale;
-            zoom.translate(t);
-            svg.attr("transform", "translate(" + t + ")scale(" + s + ")");
-        }
+            function zoomed() {
+                var t = d3.event.translate,
+                    s = d3.event.scale;
+                zoom.translate(t);
+                svg.attr("transform", "translate(" + t + ")scale(" + s + ")");
+            }
 
-        // 1. Mapiranje država na regije/valute
-        // Ovo je primjer, proširi ga prema potrebama i podacima
-        var countryToRegion = {
-            "Afghanistan": "",
-            "Albania": "Euro",
-            "Algeria": "MENA - U.S. Dollar",
-            "Angola": "South African Rand",
-            "Antarctica": "",
-            "Argentina": "LATAM - U.S. Dollar",
-            "Armenia": "Russian Ruble",
-            "Australia": "Australian Dollar",
-            "Austria": "Euro",
-            "Azerbaijan": "Russian Ruble",
-            "Bangladesh": "Indian Rupee",
-            "Belarus": "Russian Ruble",
-            "Belgium": "Euro",
-            "Belize": "U.S. Dollar",
-            "Benin": "South African Rand",
-            "Bermuda": "U.S. Dollar",
-            "Bhutan": "Indian Rupee",
-            "Bolivia": "LATAM - U.S. Dollar",
-            "Bosnia and Herzegovina": "Euro",
-            "Botswana": "South African Rand",
-            "Brazil": "Brazilian Real",
-            "Brunei": "Singapore Dollar",
-            "Bulgaria": "Euro",
-            "Burkina Faso": "South African Rand",
-            "Burundi": "South African Rand",
-            "Cambodia": "Vietnamese Dong",
-            "Cameroon": "South African Rand",
-            "Canada": "Canadian Dollar",
-            "Central African Republic": "South African Rand",
-            "Chad": "South African Rand",
-            "Chile": "Chilean Peso",
-            "China": "Chinese Yuan",
-            "Colombia": "Colombian Peso",
-            "Costa Rica": "Costa Rican Colon",
-            "Croatia": "Euro",
-            "Cuba": "",
-            "Cyprus": "Euro",
-            "Czech Republic": "Euro",
-            "Democratic Republic of the Congo": "South African Rand",
-            "Denmark": "Euro",
-            "Djibouti": "South African Rand",
-            "Dominican Republic": "U.S. Dollar",
-            "East Timor": "U.S. Dollar",
-            "Ecuador": "LATAM - U.S. Dollar",
-            "Egypt": "MENA - U.S. Dollar",
-            "El Salvador": "U.S. Dollar",
-            "Equatorial Guinea": "South African Rand",
-            "Eritrea": "South African Rand",
-            "Estonia": "Euro",
-            "Ethiopia": "South African Rand",
-            "Falkland Islands": "U.S. Dollar",
-            "Fiji": "Australian Dollar",
-            "Finland": "Euro",
-            "France": "Euro",
-            "French Guiana": "Euro",
-            "French Southern and Antarctic Lands": "Euro",
-            "Gabon": "South African Rand",
-            "Gambia": "South African Rand",
-            "Georgia": "Russian Ruble",
-            "Germany": "Euro",
-            "Ghana": "South African Rand",
-            "Greece": "Euro",
-            "Greenland": "Euro",
-            "Guatemala": "U.S. Dollar",
-            "Guinea": "South African Rand",
-            "Guinea Bissau": "South African Rand",
-            "Guyana": "U.S. Dollar",
-            "Haiti": "U.S. Dollar",
-            "Honduras": "U.S. Dollar",
-            "Hungary": "Euro",
-            "Iceland": "Euro",
-            "India": "Indian Rupee",
-            "Indonesia": "Indonesian Rupiah",
-            "Iran": "",
-            "Iraq": "MENA - U.S. Dollar",
-            "Ireland": "Euro",
-            "Israel": "Israeli New Shekel",
-            "Italy": "Euro",
-            "Ivory Coast": "South African Rand",
-            "Jamaica": "U.S. Dollar",
-            "Japan": "Japanese Yen",
-            "Jordan": "MENA - U.S. Dollar",
-            "Kazakhstan": "Kazakhstani Tenge",
-            "Kenya": "South African Rand",
-            "Kosovo": "Euro",
-            "Kuwait": "Kuwaiti Dinar",
-            "Kyrgyzstan": "Russian Ruble",
-            "Laos": "Vietnamese Dong",
-            "Latvia": "Euro",
-            "Lebanon": "MENA - U.S. Dollar",
-            "Lesotho": "South African Rand",
-            "Liberia": "South African Rand",
-            "Libya": "MENA - U.S. Dollar",
-            "Lithuania": "Euro",
-            "Luxembourg": "Euro",
-            "Macedonia": "Euro",
-            "Madagascar": "South African Rand",
-            "Malawi": "South African Rand",
-            "Malaysia": "Malaysian Ringgit",
-            "Mali": "South African Rand",
-            "Malta": "Euro",
-            "Mauritania": "South African Rand",
-            "Mexico": "Mexican Peso",
-            "Moldova": "Russian Ruble",
-            "Mongolia": "Chinese Yuan",
-            "Montenegro": "Euro",
-            "Morocco": "MENA - U.S. Dollar",
-            "Mozambique": "South African Rand",
-            "Myanmar": "Vietnamese Dong",
-            "Namibia": "South African Rand",
-            "Nepal": "Indian Rupee",
-            "Netherlands": "Euro",
-            "New Caledonia": "Australian Dollar",
-            "New Zealand": "New Zealand Dollar",
-            "Nicaragua": "U.S. Dollar",
-            "Niger": "South African Rand",
-            "Nigeria": "South African Rand",
-            "North Korea": "",
-            "Northern Cyprus": "Euro",
-            "Norway": "Norwegian Krone",
-            "Oman": "MENA - U.S. Dollar",
-            "Pakistan": "Indian Rupee",
-            "Panama": "U.S. Dollar",
-            "Papua New Guinea": "Australian Dollar",
-            "Paraguay": "LATAM - U.S. Dollar",
-            "Peru": "Peruvian Sol",
-            "Philippines": "Philippine Peso",
-            "Poland": "Polish Zloty",
-            "Portugal": "Euro",
-            "Puerto Rico": "U.S. Dollar",
-            "Qatar": "Qatari Riyal",
-            "Republic of Serbia": "Euro",
-            "Republic of the Congo": "South African Rand",
-            "Romania": "Euro",
-            "Russia": "Russian Ruble",
-            "Rwanda": "South African Rand",
-            "Saudi Arabia": "Saudi Riyal",
-            "Senegal": "South African Rand",
-            "Sierra Leone": "South African Rand",
-            "Slovakia": "Euro",
-            "Slovenia": "Euro",
-            "Solomon Islands": "Australian Dollar",
-            "Somalia": "South African Rand",
-            "Somaliland": "South African Rand",
-            "South Africa": "South African Rand",
-            "South Korea": "South Korean Won",
-            "South Sudan": "South African Rand",
-            "Spain": "Euro",
-            "Sri Lanka": "Indian Rupee",
-            "Sudan": "South African Rand",
-            "Suriname": "U.S. Dollar",
-            "Swaziland": "South African Rand",
-            "Sweden": "Euro",
-            "Switzerland": "Swiss Franc",
-            "Syria": "MENA - U.S. Dollar",
-            "Taiwan": "Taiwan Dollar",
-            "Tajikistan": "Russian Ruble",
-            "Thailand": "Thai Baht",
-            "The Bahamas": "U.S. Dollar",
-            "Togo": "South African Rand",
-            "Trinidad and Tobago": "U.S. Dollar",
-            "Tunisia": "MENA - U.S. Dollar",
-            "Turkey": "MENA - U.S. Dollar",
-            "Turkmenistan": "Russian Ruble",
-            "Uganda": "South African Rand",
-            "Ukraine": "Ukrainian Hryvnia",
-            "United Arab Emirates": "U.A.E. Dirham",
-            "United Kingdom": "British Pound",
-            "United Republic of Tanzania": "South African Rand",
-            "United States of America": "U.S. Dollar",
-            "Uruguay": "Uruguayan Peso",
-            "Uzbekistan": "Russian Ruble",
-            "Vanuatu": "Australian Dollar",
-            "Venezuela": "LATAM - U.S. Dollar",
-            "Vietnam": "Vietnamese Dong",
-            "West Bank": "MENA - U.S. Dollar",
-            "Western Sahara": "MENA - U.S. Dollar",
-            "Yemen": "MENA - U.S. Dollar",
-            "Zambia": "South African Rand",
-            "Zimbabwe": "South African Rand"
-        };
+            // Tooltip helper
+            var tooltip = d3.select("body").append("div")
+                .attr("class", "d3-tooltip")
+                .style("opacity", 0);
 
 
+            queue()
+                .defer(d3.json, "data/data.json")
+                .defer(d3.json, "data/steamCountries.json")
+                .defer(d3.json, "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
+                .await(ready);
 
-
-
-        // 2. Tooltip helper
-        var tooltip = d3.select("body").append("div")
-            .attr("class", "d3-tooltip")
-            .style("opacity", 0);
-
-        // 3. Učitaj podatke o igrama i karti
-        d3.json("data/data.json", function(error, gameData) {
-            if (error) throw error;
-
-            // Učitaj ispravan TopoJSON s imenima država
-            d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json", function(error, world) {
+            function ready(error, gameData, steamCountryStats, world) {
                 if (error) throw error;
-                var countries = topojson.feature(world, world.objects.countries).features;
 
-                // 4. Izračunaj prosječnu cijenu po regiji
+                var statsByCountry = {};
+                steamCountryStats.forEach(function (d) {
+                    statsByCountry[d.country] = d;
+                });
+
+                var countryToRegion = {};
+                gameData.forEach(function (game) {
+                    if (game.regionalPrices) {
+                        Object.keys(game.regionalPrices).forEach(function (region) {
+                            countryToRegion[region] = region;
+                        });
+                    }
+                });
+
                 var avgPriceByRegion = {};
-                Object.keys(countryToRegion).forEach(function(country) {
-                    var region = countryToRegion[country];
-                    var prices = gameData.map(function(game) {
+                Object.keys(countryToRegion).forEach(function (region) {
+                    var prices = gameData.map(function (game) {
                         var priceStr = game.regionalPrices[region];
                         if (!priceStr) return null;
                         var num = parseFloat(priceStr.replace(/[^\d,\.]/g, '').replace(',', '.'));
                         return isNaN(num) ? null : num;
-                    }).filter(p => p !== null);
+                    }).filter(function (p) {
+                        return p !== null;
+                    });
                     if (prices.length > 0) {
                         avgPriceByRegion[region] = d3.mean(prices);
                     }
                 });
 
-                // 5. Skala boja
+                var countries = topojson.feature(world, world.objects.countries).features;
+
+                var speeds = steamCountryStats
+                    .map(function (d) {
+                        return parseFloat(d.avg_download_rate);
+                    })
+                    .filter(function (d) {
+                        return !isNaN(d);
+                    });
                 var color = d3.scale.linear()
-                    .domain(d3.extent(Object.values(avgPriceByRegion)))
+                    .domain([d3.min(speeds), d3.max(speeds)])
                     .range(["#cce5ff", "#003366"]);
 
-                // 6. Iscrtaj države
+
                 svg.selectAll("path")
                     .data(countries)
                     .enter().append("path")
                     .attr("d", path)
-                    .attr("fill", d => {
-                        const region = countryToRegion[d.properties.name];
-                        return region ? color(avgPriceByRegion[region] || 0) : "#eee";
+                    .attr("fill", function (d) {
+                        var stats = statsByCountry[d.properties.name];
+                        return stats && stats.avg_download_rate
+                            ? color(parseFloat(stats.avg_download_rate))
+                            : "#eee";
                     })
                     .attr("stroke", "#333")
                     .attr("stroke-width", 0.5)
-                    .on("mouseover", function(d) {
-                        const region = countryToRegion[d.properties.name];
+                    .on("mouseover", function (d) {
+                        var stats = statsByCountry[d.properties.name];
                         d3.select(this).attr("fill", "#3399ff");
                         tooltip.transition().duration(100).style("opacity", 0.95);
-                        tooltip.html(`
-                        <strong>${d.properties.name}</strong><br>
-                        ${region ? `Avg. price: ${avgPriceByRegion[region]?.toFixed(2) || 'N/A'}` : 'No data'}
-                    `);
+                        var region = stats && stats.regionCurrency ? stats.regionCurrency : d.properties.name;
+                        var avgPrice = avgPriceByRegion[region];
+
+                        tooltip.html(
+                            `<strong>${d.properties.name}</strong><br>` +
+                            (stats
+                                ? `<strong>Avg. download rate:</strong> ${stats.avg_download_rate}<br>
+           <strong>Total bytes:</strong> ${stats.total_bytes}<br>
+           <strong>Traffic share:</strong> ${stats.percent_traffic}<br>` +
+                                (avgPrice
+                                    ? `<strong>Avg. price (${region}):</strong> ${avgPrice.toFixed(2)}`
+                                    : `<strong>Avg. price:</strong> No data`)
+                                : "No data")
+                        );
+
                     })
-                    .on("mousemove", () => {
+                    .on("mousemove", function () {
                         tooltip.style("left", (d3.event.pageX + 15) + "px")
                             .style("top", (d3.event.pageY - 28) + "px");
                     })
-                    .on("mouseout", function(d) {
-                        const region = countryToRegion[d.properties.name];
-                        d3.select(this).attr("fill", region ? color(avgPriceByRegion[region] || 0) : "#eee");
+                    .on("mouseout", function (d) {
+                        var stats = statsByCountry[d.properties.name];
+                        d3.select(this).attr("fill", stats && stats.avg_download_rate ? color(parseFloat(stats.avg_download_rate)) : "#eee");
                         tooltip.transition().duration(200).style("opacity", 0);
+                    })
+                    .on("click", function (d) {
+                        var stats = statsByCountry[d.properties.name];
+                        var region = stats && stats.regionCurrency ? stats.regionCurrency : d.properties.name;
+                        showCountryStats(stats, avgPriceByRegion, region, d.properties.name);
                     });
-            });
-        });
-    });
+
+                var selectedCountries = [];
+                var colors = [
+                    "#e41a1c", // crvena
+                    "#377eb8", // plava
+                    "#4daf4a", // zelena
+                    "#984ea3", // ljubičasta
+                    "#ff7f00", // narančasta
+                    "#ffff33", // žuta
+                    "#a65628", // smeđa
+                    "#f781bf", // roza
+                    "#999999", // siva
+                    "#66c2a5", // tirkizna
+                    "#fc8d62", // breskva
+                    "#8da0cb"  // svijetlo plava
+                ];
+
+                var countryColor = function (i) {
+                    return colors[i % colors.length];
+                };
+
+                var countryColorMap = {};
+                var colorIndex = 0;
+
+                function getCountryColor(name) {
+                    if (!countryColorMap[name]) {
+                        countryColorMap[name] = countryColor(colorIndex++);
+                    }
+                    return countryColorMap[name];
+                }
+
+                function updateChart(dataKey) {
+                    var margin = {top: 30, right: 20, bottom: 70, left: 60};
+                    width = 400 - margin.left - margin.right,
+                        height = (selectedCountries.length * 40) || 40;
+
+                    function getValue(d) {
+                        if (dataKey === 'downloadRate') return d.downloadRate || 0;
+                        if (dataKey === 'avgPrice') return d.avgPrice || 0;
+                        if (dataKey === 'totalData') return d.totalData || 0;
+                        return 0;
+                    }
+
+                    var svg = d3.select("#combined-chart").select("svg");
+
+                    if (svg.empty()) {
+                        svg = d3.select("#combined-chart")
+                            .append("svg")
+                            .attr("width", width + margin.left + margin.right)
+                            .attr("height", height + margin.top + margin.bottom);
+
+                        svg.append("g").attr("class", "main-group")
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                    } else {
+                        svg.attr("height", height + margin.top + margin.bottom);
+                    }
+
+                    var mainGroup = svg.select(".main-group");
+
+                    // Scale
+                    var maxVal = d3.max(selectedCountries, getValue);
+                    var xScale = d3.scale.linear()
+                        .domain([0, maxVal])
+                        .range([0, width]);
+
+                    var yScale = d3.scale.ordinal()
+                        .domain(selectedCountries.map(d => d.name))
+                        .rangeRoundBands([0, height], 0.2);
+
+                    // Bars
+                    var bars = mainGroup.selectAll("rect.bar")
+                        .data(selectedCountries, d => d.name);
+
+// exit
+                    bars.exit()
+                        .transition()
+                        .duration(500)
+                        .attr("width", 0)
+                        .remove();
+
+// enter
+                    bars.enter()
+                        .append("rect")
+                        .attr("class", "bar")
+                        .attr("x", 0)
+                        .attr("y", d => yScale(d.name))
+                        .attr("height", yScale.rangeBand())
+                        .attr("width", 0)
+                        .attr("fill", d => countryColorMap[d.name])
+                        .transition()
+                        .duration(800)
+                        .attr("width", d => xScale(getValue(d)));
+
+
+// update (postojeći)
+                    bars.transition()
+                        .duration(800)
+                        .attr("y", d => yScale(d.name))
+                        .attr("height", yScale.rangeBand())
+                        .attr("width", d => xScale(getValue(d)))
+                        .attr("fill", d => countryColorMap[d.name]);
+
+
+                    // Remove old x-axis
+                    mainGroup.select(".x.axis").remove();
+
+                    // X Axis
+                    var xAxis = d3.svg.axis()
+                        .scale(xScale)
+                        .orient("bottom")
+                        .ticks(4)
+                        .tickFormat(function (d) {
+                            if (dataKey === 'downloadRate') return d.toFixed(1) + " Mbps";
+                            if (dataKey === 'avgPrice') return "$" + d.toFixed(2);
+                            if (dataKey === 'totalData') return (d / (1024 * 1024 * 1024)).toFixed(2) + " GB";
+                            return d;
+                        });
+
+                    var xAxisGroup = mainGroup.append("g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(xAxis);
+
+                    // Tanji stroke za x-osu
+                    xAxisGroup.select(".domain").style("stroke-width", "0.5px");
+                    xAxisGroup.selectAll("line").style("stroke-width", "0.5px");
+                    xAxisGroup.selectAll("text").style("font-size", "10px");
+
+                    // Animacija osa
+                    xAxisGroup.selectAll("path,path,line")
+                        .attr("stroke-dasharray", function () {
+                            var length = this.getTotalLength ? this.getTotalLength() : 0;
+                            return length + " " + length;
+                        })
+                        .attr("stroke-dashoffset", function () {
+                            var length = this.getTotalLength ? this.getTotalLength() : 0;
+                            return length;
+                        })
+                        .transition()
+                        .duration(800)
+                        .attr("stroke-dashoffset", 0);
+
+                    // Legenda
+                    // Ukloni staru legendu
+                    svg.selectAll(".legend-group").remove();
+
+// Dodaj legendu ispod grafa
+                    var legend = svg.append("g")
+                        .attr("class", "legend-group")
+                        .attr("transform", `translate(40, ${height + 60})`);  // pomakni ispod grafa (40px ispod)
+
+// širina jednog legend itema (prilagodi po potrebi)
+                    var legendItemWidth = 110;
+
+                    var legendGroups = legend.selectAll(".legend-item")
+                        .data(selectedCountries, d => d.name);
+
+                    var legendEnter = legendGroups.enter()
+                        .append("g")
+                        .attr("class", "legend-item")
+                        .attr("transform", (d, i) => `translate(${i * legendItemWidth}, 0)`);
+
+                    legendEnter.append("rect")
+                        .attr("width", 15)
+                        .attr("height", 15)
+                        .attr("fill", d => countryColorMap[d.name])
+                        .attr("stroke", "#333");
+
+                    legendEnter.append("text")
+                        .attr("x", 20)
+                        .attr("y", 12)
+                        .style("font-size", "12px")
+                        .text(d => d.name);
+
+                    legendGroups.exit().remove();
+
+                }
+
+                function showCountryStats(stats, avgPriceByRegion, region, countryName) {
+                    if (!stats) return;
+
+                    // Ako nema boje za zemlju, dodaj je
+                    if (!countryColorMap[countryName]) {
+                        countryColorMap[countryName] = countryColor(Object.keys(countryColorMap).length);
+                    }
+
+                    // Provjeri da nije već dodana
+                    var alreadyExists = selectedCountries.find(d => d.name === countryName);
+                    if (!alreadyExists) {
+                        selectedCountries.push({
+                            name: countryName,
+                            downloadRate: parseFloat(stats.avg_download_rate),
+                            avgPrice: avgPriceByRegion[region] || null,
+                            totalData: parseFloat(stats.total_bytes) || 0,
+                            region: region
+                        });
+                    } else {
+                        // PRONAĐI INDEKS I UKLONI GA
+                        var index = selectedCountries.findIndex(d => d.name === countryName);
+                        if (index !== -1) {
+                            selectedCountries.splice(index, 1);
+                        }
+                    }
+
+
+                    d3.select("#no-selection-message").style("display", "none");
+                    d3.select("#stats-tabs").style("display", "block");
+
+                    // Po defaultu crtaj downloadRate graf
+                    updateChart('downloadRate');
+                }
+
+                document.querySelectorAll('.tab-button').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const tabName = button.getAttribute('data-tab');
+
+                        // Ukloni "active" sa svih tabova i gumba
+                        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+
+                        updateChart(tabName);
+                    });
+                });
+
+
+            }
+
+        }
+    );
 </script>
-
-
-
 </body>
 </html>
