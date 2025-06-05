@@ -78,7 +78,7 @@ body {
 .navbar-nav {
     margin-left: auto;
     display: flex;
-    gap: 1.5rem;
+    gap: .5rem;
 }
 
 .navbar-link {
@@ -89,7 +89,8 @@ body {
     font-weight: 500;
     color: var(--muted-foreground);
     text-decoration: none;
-    transition: color 0.2s;
+    transition: width 0.2s, color 0.2s;
+    width: min-content;
 }
 
 .navbar-link:hover {
@@ -103,6 +104,18 @@ body {
 .icon {
     display: inline-block;
     vertical-align: middle;
+}
+
+@media (min-width: 576px) {
+    .navbar-nav {
+        margin-left: auto;
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    .navbar-link {
+        width: fit-content;
+    }
 }
 
 /* Main content */
@@ -317,7 +330,13 @@ body {
     width: 100%;
 }
 
-/* Game connections */
+.chart-container > svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Playtime stats */
 .connections-header {
     display: flex;
     justify-content: space-between;
@@ -327,7 +346,6 @@ body {
 }
 
 .search-container {
-    max-width: 20rem;
     width: 100%;
 }
 
@@ -399,6 +417,12 @@ body {
     border-radius: 0 0 var(--radius) var(--radius);
 }
 
+@media (min-width: 1200px) {
+    #game-list {
+        height: auto;
+    }
+}
+
 .card > .card-content > .search-container > input:focus + .card > .card-content > .search-container > div {
     display: flex;
 }
@@ -407,17 +431,29 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
-    display: block;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 1200px) {
+    .data-chart {
+        flex-direction: row;
+        gap: 5vw;
+    }
+
+    .data-chart > div.search-container {
+        order: 2;
+        max-width: 20rem;
+    }
 }
 
 .data-chart > div.search-container {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
+    position: relative;
+    width: 100%;
 }
 
 .data-chart > div.search-container > div.game-list {
-    position: absolute;
+    position: relative;
     height: 16.1rem;
     width: 100%;
 }

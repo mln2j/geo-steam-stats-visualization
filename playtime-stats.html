@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Connections - Steam Data Visualization</title>
+    <title>Playtime stats - Steam Data Visualization</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://d3js.org/d3.v3.min.js"></script>
@@ -22,7 +22,7 @@
                     </svg>
                     Pricing Map
                 </a>
-                <a href="game-connections.html" class="navbar-link active">
+                <a href="playtime-stats.html" class="navbar-link active">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                         <line x1="18" y1="20" x2="18" y2="10"></line>
                         <line x1="12" y1="20" x2="12" y2="4"></line>
@@ -47,8 +47,10 @@
                 <input type="text" id="game-search" class="search-input" placeholder="Search games...">
                 <div id="game-list" class="game-list"></div>
             </div>
-            <div id="playtime-chart" class="chart-container"></div>
-            <div id="legend" class="legend-container"></div>
+            <div class="playtime-container">
+                <div id="playtime-chart" class="chart-container"></div>
+                <div id="legend" class="legend-container"></div>
+            </div>
         </div>
     </main>
 
@@ -156,7 +158,9 @@
                 svgContainer = d3.select("#playtime-chart")
                     .append("svg")
                     .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom);
+                    .attr("height", height + margin.top + margin.bottom)
+                    .attr("viewBox", "0 0 " + (width) + " " + (height + margin.top + margin.bottom))
+                    .attr("preserveAspectRatio", "xMidYMid meet");
 
                 svgContainer.append("g")
                     .attr("class", "main-group")
@@ -220,6 +224,10 @@
                     .text("Select one or more games to view playtime history.");
 
                 d3.select("#legend").selectAll("*").remove();
+
+                svg.selectAll(".line").remove();
+                svg.selectAll(".dot").remove();
+
                 return;
             }
 
