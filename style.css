@@ -440,4 +440,18 @@ body {
     display: inline-block;
 }
 
+.d3-tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: #222;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 10;
+    opacity: 0.95;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+
 
