@@ -146,47 +146,107 @@
         }
 
         function updateChart() {
-            d3.select("#playtime-chart").selectAll("*").remove();
-            var margin = {top: 30, right: 80, bottom: 40, left: 60},
+            var margin = { top: 30, right: 80, bottom: 40, left: 60 },
                 width = 800 - margin.left - margin.right,
                 height = 400 - margin.top - margin.bottom;
 
-            var svg = d3.select("#playtime-chart")
-                .append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            // Kreiraj SVG samo prvi put
+            var svgContainer = d3.select("#playtime-chart").select("svg");
+            if (svgContainer.empty()) {
+                svgContainer = d3.select("#playtime-chart")
+                    .append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom);
 
-            var selectedGames = games.filter(function(g) { return selectedIds.indexOf(g.appId) !== -1; });
+                svgContainer.append("g")
+                    .attr("class", "main-group")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                // Dodaj x i y osi grupe
+                svgContainer.select(".main-group").append("g").attr("class", "x axis");
+                svgContainer.select(".main-group").append("g").attr("class", "y axis");
+
+                // Dodaj labele
+                svgContainer.select(".main-group").append("text")
+                    .attr("class", "y-label")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", -55)
+                    .attr("x", -height / 2)
+                    .attr("dy", "1em")
+                    .style("text-anchor", "middle")
+                    .style("font-size", "15px")
+                    .text("Monthly Peak Players");
+
+                svgContainer.select(".main-group").append("text")
+                    .attr("class", "x-label")
+                    .attr("x", width / 2)
+                    .attr("y", height + 35)
+                    .attr("text-anchor", "middle")
+                    .style("font-size", "15px")
+                    .text("Month");
+            }
+
+            var svg = svgContainer.select(".main-group");
+
+            svg.selectAll("text.no-data-msg").remove();
+
+            var selectedGames = games.filter(function (g) {
+                return selectedIds.indexOf(g.appId) !== -1;
+            });
 
             if (selectedGames.length === 0) {
+                // Pokaži osi (prazne skale) svejedno
+                var x = d3.time.scale().range([0, width]);
+                var y = d3.scale.linear().range([height, 0]);
+
+                var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(10);
+                var yAxis = d3.svg.axis().scale(y).orient("left");
+
+                svg.select(".x.axis")
+                    .transition().duration(750)
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(xAxis);
+
+                svg.select(".y.axis")
+                    .transition().duration(750)
+                    .call(yAxis);
+
+                svg.selectAll("text.no-data-msg").remove();
                 svg.append("text")
-                    .attr("x", width/2)
-                    .attr("y", height/2)
+                    .attr("class", "no-data-msg")
+                    .attr("x", width / 2)
+                    .attr("y", height / 2)
                     .attr("text-anchor", "middle")
                     .text("Select one or more games to view playtime history.");
+
                 d3.select("#legend").selectAll("*").remove();
                 return;
             }
 
+
             var parseTime = d3.time.format("%B %Y");
             var allMonths = d3.set();
-            selectedGames.forEach(function(game) {
-                game.monthlyPeakPlayers.forEach(function(mp) {
+
+            svg.selectAll(".line").remove();
+            svg.selectAll(".dot").remove();
+
+            selectedGames.forEach(function (game) {
+                game.monthlyPeakPlayers.forEach(function (mp) {
                     if (mp.month !== "Last 30 Days" && parseTime.parse(mp.month)) {
                         allMonths.add(mp.month);
                     }
                 });
             });
-            var months = allMonths.values().sort(function(a, b) {
+
+            var months = allMonths.values().sort(function (a, b) {
                 return parseTime.parse(a) - parseTime.parse(b);
             });
 
             if (months.length === 0) {
+                svg.selectAll("*").remove();
                 svg.append("text")
-                    .attr("x", width/2)
-                    .attr("y", height/2)
+                    .attr("x", width / 2)
+                    .attr("y", height / 2)
                     .attr("text-anchor", "middle")
                     .text("No valid monthly data available.");
                 d3.select("#legend").selectAll("*").remove();
@@ -194,33 +254,40 @@
             }
 
             var x = d3.time.scale()
-                .domain(d3.extent(months, function(m) { return parseTime.parse(m); }))
+                .domain(d3.extent(months, function (m) { return parseTime.parse(m); }))
                 .range([0, width]);
 
             var y = d3.scale.linear()
-                .domain([0, d3.max(selectedGames, function(game) {
-                    return d3.max(game.monthlyPeakPlayers, function(mp) { return mp.peakPlayers; });
+                .domain([0, d3.max(selectedGames, function (game) {
+                    return d3.max(game.monthlyPeakPlayers, function (mp) { return mp.peakPlayers; });
                 })])
                 .range([height, 0]);
 
             var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(10);
-            svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
-
             var yFormat = d3.format(".2s");
             var yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(yFormat);
-            svg.append("g")
-                .attr("class", "y axis")
-                .call(yAxis);
 
+            // Animacija osa
+            svg.select(".x.axis")
+                .transition().duration(750)
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis)
+                .selectAll("text")
+                .style("font-family", "sans-serif")
+                .style("font-size", "12px");
+
+            svg.select(".y.axis")
+                .transition().duration(750)
+                .call(yAxis)
+                .selectAll("text")
+                .style("font-family", "sans-serif")
+                .style("font-size", "12px");
 
             var line = d3.svg.line()
-                .x(function(d) { return x(parseTime.parse(d.month)); })
-                .y(function(d) { return y(d.peakPlayers); });
+                .x(function (d) { return x(parseTime.parse(d.month)); })
+                .y(function (d) { return y(d.peakPlayers); });
 
-            // Tooltip div (samo jednom na stranici)
+            // Tooltip
             var tooltip = d3.select("body").selectAll(".d3-tooltip").data([0]);
             tooltip = tooltip.enter()
                 .append("div")
@@ -228,33 +295,30 @@
                 .style("opacity", 0)
                 .merge ? tooltip : tooltip;
 
-            // Makni stare linije kojih više nema
+            // Ukloni stare linije i točke
             svg.selectAll(".line")
-                .filter(function() {
+                .filter(function () {
                     var id = d3.select(this).attr("data-id");
-                    return selectedGames.map(function(g) { return g.appId+""; }).indexOf(id) === -1;
+                    return selectedGames.map(g => g.appId + "").indexOf(id) === -1;
                 })
-                .each(function() { animateLineOut(d3.select(this)); });
+                .each(function () { animateLineOut(d3.select(this)); });
 
-            // Makni stare točke kojih više nema
             svg.selectAll(".dot")
-                .filter(function() {
+                .filter(function () {
                     var id = d3.select(this).attr("data-gameid");
-                    return selectedGames.map(function(g) { return g.appId+""; }).indexOf(id) === -1;
+                    return selectedGames.map(g => g.appId + "").indexOf(id) === -1;
                 })
-                .transition()
-                .duration(400)
+                .transition().duration(400)
                 .attr("r", 0)
                 .style("opacity", 0)
                 .remove();
 
-            // Dodaj i animiraj linije i točke za odabrane igre
-            selectedGames.forEach(function(game, i) {
-                var filteredData = game.monthlyPeakPlayers.filter(function(mp){
+            // Dodaj linije i točke
+            selectedGames.forEach(function (game, i) {
+                var filteredData = game.monthlyPeakPlayers.filter(function (mp) {
                     return mp.month !== "Last 30 Days" && parseTime.parse(mp.month);
                 });
 
-                // Ako već postoji, ne crtaj ponovno
                 var lineId = "line-" + game.appId;
                 if (!svg.select("#" + lineId).empty()) return;
 
@@ -270,22 +334,21 @@
 
                 animateLine(path);
 
-                // Dodaj točke, ali sakrij ih na početku
                 var dots = svg.selectAll(".dot-" + game.appId)
                     .data(filteredData)
                     .enter()
                     .append("circle")
                     .attr("class", "dot dot-" + game.appId)
                     .attr("data-gameid", game.appId)
-                    .attr("cx", function(d) { return x(parseTime.parse(d.month)); })
-                    .attr("cy", function(d) { return y(d.peakPlayers); })
+                    .attr("cx", function (d) { return x(parseTime.parse(d.month)); })
+                    .attr("cy", function (d) { return y(d.peakPlayers); })
                     .attr("r", 0)
                     .style("fill", color(game.name))
                     .style("opacity", 0)
-                    .on("mouseover", function(d) {
+                    .on("mouseover", function (d) {
                         d3.select(this)
                             .transition().duration(100)
-                            .attr("r", 5);
+                            .attr("r", 4);
                         tooltip.style("opacity", 0.95)
                             .html(
                                 "<strong>" + game.name + "</strong><br>" +
@@ -295,55 +358,37 @@
                             .style("left", (d3.event.pageX + 15) + "px")
                             .style("top", (d3.event.pageY - 28) + "px");
                     })
-                    .on("mousemove", function() {
+                    .on("mousemove", function () {
                         tooltip.style("left", (d3.event.pageX + 15) + "px")
                             .style("top", (d3.event.pageY - 28) + "px");
                     })
-                    .on("mouseout", function() {
+                    .on("mouseout", function () {
                         d3.select(this)
                             .transition().duration(100)
-                            .attr("r", 3);
+                            .attr("r", 2);
                         tooltip.style("opacity", 0);
                     });
 
-                // Animiraj pojavljivanje točaka nakon linije
                 dots.transition()
-                    .delay(800) // nakon što je linija iscrtan (isti kao trajanje animateLine)
+                    .delay(800)
                     .duration(400)
-                    .attr("r", 3)
+                    .attr("r", 2)
                     .style("opacity", 1);
             });
 
-            svg.append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", -55) // više lijevo od y-osi, iznad tickova
-                .attr("x", -height/2)
-                .attr("dy", "1em")
-                .style("text-anchor", "middle")
-                .style("font-size", "15px")
-                .style("font-weight", "bold")
-                .text("Monthly Peak Players");
-
-            svg.append("text")
-                .attr("x", width / 2)
-                .attr("y", height + 35)
-                .attr("text-anchor", "middle")
-                .text("Month");
-
-            // Render legend
+            // Legenda
             var legendDiv = d3.select("#legend");
             legendDiv.selectAll("*").remove();
 
-            selectedGames.forEach(function(game, i) {
-                var item = legendDiv.append("div")
-                    .attr("class", "legend-item");
+            selectedGames.forEach(function (game) {
+                var item = legendDiv.append("div").attr("class", "legend-item");
                 item.append("span")
                     .attr("class", "legend-color")
                     .style("background", color(game.name));
-                item.append("span")
-                    .text(game.name);
+                item.append("span").text(game.name);
             });
         }
+
 
     });
 </script>
