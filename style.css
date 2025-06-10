@@ -339,6 +339,10 @@ body {
 }
 
 /* Playtime stats */
+.playtime-container {
+    width: 100%;
+}
+
 .connections-header {
     display: flex;
     justify-content: space-between;
@@ -465,6 +469,7 @@ body {
     display: flex;
     flex-direction: row;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 .legend-item {
     display: flex;
