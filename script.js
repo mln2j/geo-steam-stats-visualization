@@ -1,25 +1,13 @@
 // script.js
-
-// =======================
-// ZAJEDNIČKE FUNKCIJE
-// =======================
-
 function setCurrentYear() {
     const el = document.getElementById('current-year');
     if (el) el.textContent = new Date().getFullYear();
 }
 
-// =======================
-// INDEX PAGE
-// =======================
 function initIndexPage() {
     setCurrentYear();
-    // Dodaj dodatnu logiku za naslovnicu ako treba
 }
 
-// =======================
-// PLAYTIME STATS PAGE
-// =======================
 function initPlaytimeStats() {
     setCurrentYear();
 
@@ -369,9 +357,6 @@ function initPlaytimeStats() {
     });
 }
 
-// =======================
-// PRICING MAP PAGE
-// =======================
 function initPricingMap() {
     setCurrentYear();
 
@@ -694,9 +679,6 @@ function initPricingMap() {
     }
 }
 
-// =======================
-// DETEKCIJA STRANICE I POZIV
-// =======================
 document.addEventListener('DOMContentLoaded', function () {
     const bodyClass = document.body.className;
 
