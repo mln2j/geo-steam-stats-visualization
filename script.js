@@ -510,70 +510,63 @@ function initPricingMap() {
         }
 
         function updateChart(dataKey) {
-            var margin = {top: 30, right: 20, bottom: 0, left: 60};
-            var width = 400 - margin.left - margin.right,
-                height = (selectedCountries.length * 35) || 35;
+            const margin = { top: 30, right: 20, bottom: 30, left: 60 };
+            const width = 400 - margin.left - margin.right;
+            const barHeight = 30;
+            const barSpacing = 5;
 
-            function getValue(d) {
-                if (dataKey === 'downloadRate') return d.downloadRate || 0;
-                if (dataKey === 'avgPrice') return d.avgPrice || 0;
-                if (dataKey === 'totalData') return d.totalData || 0;
-                return 0;
-            }
-
-            // Selektori za tvoje elemente
-            var noSelectionMsg = d3.select("#no-selection-message");
-            var statsTabs = d3.select("#stats-tabs");
-            var combinedChart = d3.select("#combined-chart");
-            var legend = d3.select("#legend");
+            const noSelectionMsg = d3.select("#no-selection-message");
+            const statsTabs = d3.select("#stats-tabs");
+            const combinedChart = d3.select("#combined-chart");
+            const legend = d3.select("#legend");
 
             legend.selectAll("*").remove();
 
             if (selectedCountries.length === 0) {
-                // Prikaži poruku, sakrij tabove i ukloni SVG
                 noSelectionMsg.style("display", "flex");
                 statsTabs.style("display", "none");
                 combinedChart.select("svg").remove();
                 return;
-            } else {
-                // Sakrij poruku, prikaži tabove
-                noSelectionMsg.style("display", "none");
-                statsTabs.style("display", "block");
             }
 
-            var height = (selectedCountries.length * 35);
+            noSelectionMsg.style("display", "none");
+            statsTabs.style("display", "block");
 
-            var svg = combinedChart.select("svg");
+            const height = selectedCountries.length * (barHeight + barSpacing);
+
+            const getValue = d => {
+                if (dataKey === 'downloadRate') return d.downloadRate || 0;
+                if (dataKey === 'avgPrice') return d.avgPrice || 0;
+                if (dataKey === 'totalData') return d.totalData || 0;
+                return 0;
+            };
+
+            let svg = combinedChart.select("svg");
 
             if (svg.empty()) {
                 svg = combinedChart
                     .append("svg")
                     .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom);
-
-                svg.append("g").attr("class", "main-group")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-            } else {
-                svg.attr("height", height + margin.top + margin.bottom);
+                    .append("g")
+                    .attr("class", "main-group")
+                    .attr("transform", `translate(${margin.left},${margin.top})`);
             }
 
-            var mainGroup = svg.select(".main-group");
+            // Always ensure SVG height is correct
+            combinedChart.select("svg")
+                .attr("height", height + margin.top + margin.bottom);
 
-            var maxVal = d3.max(selectedCountries, getValue);
-            var xScale = d3.scale.linear()
-                .domain([0, maxVal])
+            const mainGroup = combinedChart.select(".main-group");
+
+            const xScale = d3.scale.linear()
+                .domain([0, d3.max(selectedCountries, getValue)])
                 .range([0, width]);
 
-            var yScale = d3.scale.ordinal()
-                .domain(selectedCountries.map(d => d.name))
-                .rangeRoundBands([0, height], 0.2);
-
-            var bars = mainGroup.selectAll("rect.bar")
+            const bars = mainGroup.selectAll("rect.bar")
                 .data(selectedCountries, d => d.name);
 
             bars.exit()
-                .transition()
-                .duration(500)
+                .transition().duration(500)
                 .attr("width", 0)
                 .remove();
 
@@ -581,8 +574,8 @@ function initPricingMap() {
                 .append("rect")
                 .attr("class", "bar")
                 .attr("x", 0)
-                .attr("y", d => yScale(d.name))
-                .attr("height", yScale.rangeBand())
+                .attr("y", (d, i) => i * (barHeight + barSpacing))
+                .attr("height", barHeight)
                 .attr("width", 0)
                 .attr("fill", d => countryColorMap[d.name])
                 .transition()
@@ -591,27 +584,28 @@ function initPricingMap() {
 
             bars.transition()
                 .duration(800)
-                .attr("y", d => yScale(d.name))
-                .attr("height", yScale.rangeBand())
+                .attr("y", (d, i) => i * (barHeight + barSpacing))
+                .attr("height", barHeight)
                 .attr("width", d => xScale(getValue(d)))
                 .attr("fill", d => countryColorMap[d.name]);
 
+            // X axis
             mainGroup.select(".x.axis").remove();
 
-            var xAxis = d3.svg.axis()
+            const xAxis = d3.svg.axis()
                 .scale(xScale)
                 .orient("bottom")
                 .ticks(4)
-                .tickFormat(function (d) {
+                .tickFormat(d => {
                     if (dataKey === 'downloadRate') return d.toFixed(1) + " Mbps";
                     if (dataKey === 'avgPrice') return "$" + d.toFixed(2);
                     if (dataKey === 'totalData') return (d / (1024 * 1024 * 1024)).toFixed(2) + " GB";
                     return d;
                 });
 
-            var xAxisGroup = mainGroup.append("g")
+            const xAxisGroup = mainGroup.append("g")
                 .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
+                .attr("transform", `translate(0, ${height})`)
                 .call(xAxis);
 
             xAxisGroup.select(".domain").style("stroke-width", "1px");
@@ -620,30 +614,26 @@ function initPricingMap() {
 
             xAxisGroup.selectAll("path,path,line")
                 .attr("stroke-dasharray", function () {
-                    var length = this.getTotalLength ? this.getTotalLength() : 0;
-                    return length + " " + length;
+                    const length = this.getTotalLength ? this.getTotalLength() : 0;
+                    return `${length} ${length}`;
                 })
                 .attr("stroke-dashoffset", function () {
-                    var length = this.getTotalLength ? this.getTotalLength() : 0;
+                    const length = this.getTotalLength ? this.getTotalLength() : 0;
                     return length;
                 })
                 .transition()
                 .duration(800)
                 .attr("stroke-dashoffset", 0);
 
-            // Dodaj legendu
-            selectedCountries.forEach(function (country) {
-                var item = legend.append("div")
-                    .attr("class", "legend-item");
-
+            // Legend
+            selectedCountries.forEach(country => {
+                const item = legend.append("div").attr("class", "legend-item");
                 item.append("span")
                     .attr("class", "legend-color")
                     .style("background", countryColorMap[country.name]);
-
                 item.append("span").text(country.name);
             });
         }
-
 
         function showCountryStats(stats, avgPriceByRegion, region, countryName) {
             if (!stats) return;
