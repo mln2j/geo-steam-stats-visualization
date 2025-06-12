@@ -398,6 +398,7 @@ function initPricingMap() {
     function ready(error, gameData, steamCountryStats, world) {
         if (error) throw error;
 
+        let activeMetric = 'downloadRate';
         var statsByCountry = {};
         steamCountryStats.forEach(function (d) {
             statsByCountry[d.country] = d;
@@ -509,9 +510,9 @@ function initPricingMap() {
         }
 
         function updateChart(dataKey) {
-            var margin = {top: 30, right: 20, bottom: 70, left: 60};
+            var margin = {top: 30, right: 20, bottom: 0, left: 60};
             var width = 400 - margin.left - margin.right,
-                height = (selectedCountries.length * 40) || 40;
+                height = (selectedCountries.length * 35) || 35;
 
             function getValue(d) {
                 if (dataKey === 'downloadRate') return d.downloadRate || 0;
@@ -520,10 +521,32 @@ function initPricingMap() {
                 return 0;
             }
 
-            var svg = d3.select("#combined-chart").select("svg");
+            // Selektori za tvoje elemente
+            var noSelectionMsg = d3.select("#no-selection-message");
+            var statsTabs = d3.select("#stats-tabs");
+            var combinedChart = d3.select("#combined-chart");
+            var legend = d3.select("#legend");
+
+            legend.selectAll("*").remove();
+
+            if (selectedCountries.length === 0) {
+                // Prikaži poruku, sakrij tabove i ukloni SVG
+                noSelectionMsg.style("display", "flex");
+                statsTabs.style("display", "none");
+                combinedChart.select("svg").remove();
+                return;
+            } else {
+                // Sakrij poruku, prikaži tabove
+                noSelectionMsg.style("display", "none");
+                statsTabs.style("display", "block");
+            }
+
+            var height = (selectedCountries.length * 35);
+
+            var svg = combinedChart.select("svg");
 
             if (svg.empty()) {
-                svg = d3.select("#combined-chart")
+                svg = combinedChart
                     .append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom);
@@ -591,8 +614,8 @@ function initPricingMap() {
                 .attr("transform", "translate(0," + height + ")")
                 .call(xAxis);
 
-            xAxisGroup.select(".domain").style("stroke-width", "0.5px");
-            xAxisGroup.selectAll("line").style("stroke-width", "0.5px");
+            xAxisGroup.select(".domain").style("stroke-width", "1px");
+            xAxisGroup.selectAll("line").style("stroke-width", "1px");
             xAxisGroup.selectAll("text").style("font-size", "10px");
 
             xAxisGroup.selectAll("path,path,line")
@@ -608,36 +631,19 @@ function initPricingMap() {
                 .duration(800)
                 .attr("stroke-dashoffset", 0);
 
-            svg.selectAll(".legend-group").remove();
+            // Dodaj legendu
+            selectedCountries.forEach(function (country) {
+                var item = legend.append("div")
+                    .attr("class", "legend-item");
 
-            var legend = svg.append("g")
-                .attr("class", "legend-group")
-                .attr("transform", `translate(40, ${height + 60})`);
+                item.append("span")
+                    .attr("class", "legend-color")
+                    .style("background", countryColorMap[country.name]);
 
-            var legendItemWidth = 110;
-
-            var legendGroups = legend.selectAll(".legend-item")
-                .data(selectedCountries, d => d.name);
-
-            var legendEnter = legendGroups.enter()
-                .append("g")
-                .attr("class", "legend-item")
-                .attr("transform", (d, i) => `translate(${i * legendItemWidth}, 0)`);
-
-            legendEnter.append("rect")
-                .attr("width", 15)
-                .attr("height", 15)
-                .attr("fill", d => countryColorMap[d.name])
-                .attr("stroke", "#333");
-
-            legendEnter.append("text")
-                .attr("x", 20)
-                .attr("y", 12)
-                .style("font-size", "12px")
-                .text(d => d.name);
-
-            legendGroups.exit().remove();
+                item.append("span").text(country.name);
+            });
         }
+
 
         function showCountryStats(stats, avgPriceByRegion, region, countryName) {
             if (!stats) return;
@@ -665,12 +671,13 @@ function initPricingMap() {
             d3.select("#no-selection-message").style("display", "none");
             d3.select("#stats-tabs").style("display", "block");
 
-            updateChart('downloadRate');
+            updateChart(activeMetric);
         }
 
         document.querySelectorAll('.tab-button').forEach(button => {
             button.addEventListener('click', () => {
                 const tabName = button.getAttribute('data-tab');
+                activeMetric = tabName;
                 document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
                 updateChart(tabName);

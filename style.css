@@ -468,13 +468,14 @@ body {
     margin-left: 4rem;
     display: flex;
     flex-direction: row;
-    gap: 1rem;
+    column-gap: .85rem;
+    row-gap: .25rem;
     flex-wrap: wrap;
 }
 .legend-item {
     display: flex;
     align-items: center;
-    gap: .2rem;
+    gap: .35rem;
     font-size: 15px;
 }
 .legend-color {
