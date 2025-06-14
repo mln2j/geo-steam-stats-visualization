@@ -357,7 +357,7 @@ function initPlaytimeStats() {
     });
 }
 
-function initPricingMap() {
+function initWorldMap() {
     setCurrentYear();
 
     var width = 900, height = 500;
@@ -527,6 +527,7 @@ function initPricingMap() {
                     .append("div")
                     .attr("id", "bar-tooltip")
                     .attr("class", "d3-tooltip");
+                barTooltip.style("opacity", 0);
             }
 
             legend.selectAll("*").remove();
@@ -709,8 +710,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (bodyClass.includes('playtime-stats')) {
         initPlaytimeStats();
-    } else if (bodyClass.includes('pricing-map')) {
-        initPricingMap();
+    } else if (bodyClass.includes('world-map')) {
+        initWorldMap();
     } else if (bodyClass.includes('index')) {
         initIndexPage();
     }

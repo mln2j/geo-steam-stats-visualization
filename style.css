@@ -460,7 +460,7 @@ body {
     display: flex;
 }
 
-.card > .card-content {
+.card:not(.map-card, .stats-card) > .card-content {
     padding: 0.25rem 1.5rem 1.5rem;
 }
 
