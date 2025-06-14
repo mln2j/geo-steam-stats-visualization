@@ -502,6 +502,39 @@ function initWorldMap() {
         var countryColorMap = {};
         var colorIndex = 0;
 
+        function parseByteSize(value) {
+            if (!value || typeof value !== 'string') return 0;
+
+            const units = {
+                B: 1,
+                KB: 1024,
+                MB: 1024 ** 2,
+                GB: 1024 ** 3,
+                TB: 1024 ** 4,
+                PB: 1024 ** 5
+            };
+
+            const match = value.trim().match(/([\d.,]+)\s*(B|KB|MB|GB|TB|PB)/i);
+            if (!match) return 0;
+
+            const num = parseFloat(match[1].replace(',', '.'));
+            const unit = match[2].toUpperCase();
+
+            return num * (units[unit] || 1);
+        }
+
+        function formatByteSize(bytes) {
+            if (bytes === 0) return "0 B";
+            if (isNaN(bytes)) return "N/A";
+
+            const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(1024));
+
+            const value = bytes / Math.pow(1024, i);
+            return value.toFixed(2) + ' ' + units[i];
+        }
+
+
         function getCountryColor(name) {
             if (!countryColorMap[name]) {
                 countryColorMap[name] = countryColor(colorIndex++);
@@ -605,8 +638,7 @@ function initWorldMap() {
 
             bars.on("mouseover", function (d) {
                 barTooltip.transition().duration(100).style("opacity", 1);
-                barTooltip
-                    .html(`<strong>${d.name}</strong><br>${formatValue(d)}`);
+                barTooltip.html(`<strong>${d.name}</strong><br><strong>Total data:</strong> ${formatByteSize(d.totalData)}`);
             })
                 .on("mousemove", function () {
                     barTooltip
@@ -627,7 +659,7 @@ function initWorldMap() {
                 .tickFormat(d => {
                     if (dataKey === 'downloadRate') return d.toFixed(1) + " Mbps";
                     if (dataKey === 'avgPrice') return "€" + d.toFixed(2);
-                    if (dataKey === 'totalData') return (d / (1024 * 1024 * 1024)).toFixed(2) + " GB";
+                    if (dataKey === 'totalData') return formatByteSize(d);
                     return d;
                 });
 
@@ -677,9 +709,10 @@ function initWorldMap() {
                     name: countryName,
                     downloadRate: parseFloat(stats.avg_download_rate),
                     avgPrice: avgPriceByRegion[region] || null,
-                    totalData: parseFloat(stats.total_bytes) || 0,
+                    totalData: parseByteSize(stats.total_bytes),
                     region: region
                 });
+
             } else {
                 var index = selectedCountries.findIndex(d => d.name === countryName);
                 if (index !== -1) {
