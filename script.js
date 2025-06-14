@@ -263,6 +263,8 @@ function initPlaytimeStats() {
                 .style("opacity", 0)
                 .merge ? tooltip : tooltip;
 
+            var tooltipTimeout = null;
+
             svg.selectAll(".line")
                 .filter(function () {
                     var id = d3.select(this).attr("data-id");
@@ -312,10 +314,18 @@ function initPlaytimeStats() {
                     .style("fill", color(game.name))
                     .style("opacity", 0)
                     .on("mouseover", function (d) {
-                        d3.select(this)
-                            .transition().duration(100)
-                            .attr("r", 4);
-                        tooltip.style("opacity", 0.95)
+                        // Prekini skrivanje tooltipa ako se brzo prešlo na drugu točku
+                        if (tooltipTimeout) {
+                            clearTimeout(tooltipTimeout);
+                            tooltipTimeout = null;
+                        }
+
+                        var circle = d3.select(this);
+                        circle.interrupt();
+                        circle.transition().duration(100).attr("r", 4);
+
+                        tooltip.interrupt()
+                            .style("opacity", 0.95)
                             .html(
                                 "<strong>" + game.name + "</strong><br>" +
                                 d.month + "<br>" +
@@ -324,15 +334,18 @@ function initPlaytimeStats() {
                             .style("left", (d3.event.pageX + 15) + "px")
                             .style("top", (d3.event.pageY - 28) + "px");
                     })
+                    .on("mouseout", function () {
+                        var circle = d3.select(this);
+                        circle.interrupt().transition().duration(100).attr("r", 2);
+
+                        tooltipTimeout = setTimeout(function () {
+                            tooltip.transition().duration(350).style("opacity", 0);
+                            tooltipTimeout = null;
+                        }, 300); // ← ovdje kontroliraš koliko dugo tooltip "čeka" prije nego nestane
+                    })
                     .on("mousemove", function () {
                         tooltip.style("left", (d3.event.pageX + 15) + "px")
                             .style("top", (d3.event.pageY - 28) + "px");
-                    })
-                    .on("mouseout", function () {
-                        d3.select(this)
-                            .transition().duration(100)
-                            .attr("r", 2);
-                        tooltip.transition().duration(350).style("opacity", 0);
                     });
 
                 dots.transition()
