@@ -463,13 +463,13 @@ function initWorldMap() {
                 tooltip.html(
                     `<strong>${d.properties.name}</strong><br>` +
                     (stats
-                        ? `<strong>Avg. download rate:</strong> ${stats.avg_download_rate}<br>
-                           <strong>Total bytes:</strong> ${stats.total_bytes}<br>
-                           <strong>Traffic share:</strong> ${stats.percent_traffic}<br>` +
+                        ? `<strong>Download rate:</strong> ${stats.avg_download_rate}<br>` +
                         (avgPrice
-                            ? `<strong>Avg. price (${region}):</strong> ${avgPrice.toFixed(2)}`
+                            ? `<strong>Avg. price:</strong> ${avgPrice.toFixed(2)}\€`
                             : `<strong>Avg. price:</strong> No data`)
                         : "No data")
+                    + `  <br><strong>Total data:</strong> ${stats.total_bytes}<br>
+                        <strong>Traffic share:</strong> ${stats.percent_traffic}`
                 );
 
             })
@@ -510,7 +510,7 @@ function initWorldMap() {
         }
 
         function updateChart(dataKey) {
-            const margin = { top: 30, right: 20, bottom: 30, left: 60 };
+            const margin = {top: 30, right: 20, bottom: 30, left: 60};
             const width = 400 - margin.left - margin.right;
             const barHeight = 30;
             const barSpacing = 5;
@@ -579,7 +579,7 @@ function initWorldMap() {
 
             function formatValue(d) {
                 if (dataKey === 'downloadRate') return d.downloadRate.toFixed(1) + " Mbps";
-                if (dataKey === 'avgPrice') return "$" + d.avgPrice.toFixed(2);
+                if (dataKey === 'avgPrice') return (d.currency || "€") + d.avgPrice.toFixed(2);
                 if (dataKey === 'totalData') return (d.totalData / (1024 * 1024 * 1024)).toFixed(2) + " GB";
                 return "";
             }
@@ -626,7 +626,7 @@ function initWorldMap() {
                 .ticks(4)
                 .tickFormat(d => {
                     if (dataKey === 'downloadRate') return d.toFixed(1) + " Mbps";
-                    if (dataKey === 'avgPrice') return "$" + d.toFixed(2);
+                    if (dataKey === 'avgPrice') return "€" + d.toFixed(2);
                     if (dataKey === 'totalData') return (d / (1024 * 1024 * 1024)).toFixed(2) + " GB";
                     return d;
                 });
