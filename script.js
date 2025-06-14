@@ -11,7 +11,6 @@ function initIndexPage() {
 function initPlaytimeStats() {
     setCurrentYear();
 
-    // Učitaj podatke i inicijaliziraj vizualizaciju
     d3.json("data/data.json", function(error, games) {
         if (error) throw error;
 
@@ -489,18 +488,19 @@ function initWorldMap() {
             });
 
         var selectedCountries = [];
-        var colors = [
-            "#e41a1c", "#377eb8", "#4daf4a", "#984ea3",
-            "#ff7f00", "#ffff33", "#a65628", "#f781bf",
-            "#999999", "#66c2a5", "#fc8d62", "#8da0cb"
-        ];
 
-        var countryColor = function (i) {
-            return colors[i % colors.length];
-        };
+
+        var colorScale = d3.scale.category10();
 
         var countryColorMap = {};
         var colorIndex = 0;
+
+        function getCountryColor(name) {
+            if (!countryColorMap[name]) {
+                countryColorMap[name] = colorScale(colorIndex++);
+            }
+            return countryColorMap[name];
+        }
 
         function parseByteSize(value) {
             if (!value || typeof value !== 'string') return 0;
@@ -638,7 +638,20 @@ function initWorldMap() {
 
             bars.on("mouseover", function (d) {
                 barTooltip.transition().duration(100).style("opacity", 1);
-                barTooltip.html(`<strong>${d.name}</strong><br><strong>Total data:</strong> ${formatByteSize(d.totalData)}`);
+                let tooltipContent = `<strong>${d.name}</strong><br>`;
+
+                if (activeMetric === 'downloadRate') {
+                    tooltipContent += `<strong>Download rate:</strong> ${d.downloadRate.toFixed(1)} Mbps`;
+                } else if (activeMetric === 'avgPrice') {
+                    const currency = d.currency || "€";
+                    tooltipContent += `<strong>Avg price:</strong> ${d.avgPrice ? d.avgPrice.toFixed(2) : 'N/A'}${currency}`;
+                } else if (activeMetric === 'totalData') {
+                    tooltipContent += `<strong>Total data:</strong> ${formatByteSize(d.totalData)}`;
+                } else {
+                    tooltipContent += formatValue(d);
+                }
+
+                barTooltip.html(tooltipContent);
             })
                 .on("mousemove", function () {
                     barTooltip
@@ -700,7 +713,7 @@ function initWorldMap() {
             if (!stats) return;
 
             if (!countryColorMap[countryName]) {
-                countryColorMap[countryName] = countryColor(Object.keys(countryColorMap).length);
+                countryColorMap[countryName] = colorScale(Object.keys(countryColorMap).length);
             }
 
             var alreadyExists = selectedCountries.find(d => d.name === countryName);
